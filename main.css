@@ -4,15 +4,64 @@ h1 {
 h2 {
     text-align:center;
 }
+caption {
+    color:rgb(107, 37, 34);
+}
+td {
+    width:80px;
+}
 table {
+    border:1px solid rgb(49, 84, 2);
+    margin-right:5px;
+    margin-bottom:5px;
     display:inline-block;
     float:left;
 }
-div {
+.label {
+    color:rgb(104, 104, 2);
+}
+.value {
+    color:rgb(136, 79, 3);
+}
+#col {
+    display:inline-block;
+    float:left;
+    height:100%;
+    width:50%;
+}
+#heading {
+    width:708px;
+    text-align:center;
+    margin-top:-5px;
+    margin-left:-5px;
+    margin-bottom:10px;
+    border-bottom:1px solid rgb(113, 14, 2);
+}
+#robot-container {
+    border:1px solid rgb(113, 14, 2);
+    padding-left:5px;
+    padding-top:5px;
+    float:left;
+    width:708px;
+    margin-bottom:20px;
+}
+#settings-container {
+    border:1px solid rgb(113, 14, 2);
+    padding-left:5px;
+    padding-top:5px;
+    padding-bottom:5px;
+    float:left;
+    width:708px;
+}
+#graphics-container {
+    display:inline-block;
+    margin:20px;
+    border:1px solid grey;
     float:left;
     width:50%;
+    height:100%;
 }
 body {
     background-color:black;
-    color:white;
+    color: rgb(100, 70, 51);
 }

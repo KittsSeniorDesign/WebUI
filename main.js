@@ -1,4 +1,6 @@
 var number_of_robots = 0;
+var ws;
+
 function tableCreate() {
     var tbl = document.createElement('table');
     tbl.id = "table_robot_"+number_of_robots;
@@ -45,11 +47,13 @@ function tableCreate() {
                 case 0:
                     td.id = "r_"+number_of_robots+"_"+current_var+"_td";
                     td.appendChild(document.createTextNode(current_var_text));
+                    td.className = "label";
                     break;
                 case 1:
                     td.id = "r_"+number_of_robots+"_"+current_var+"_val";
                     td.innerHTML = 0;
                     td.setAttribute('align','right');
+                    td.className = "value";
                     // td.appendChild(document.createTextNode(0));
                     break;
             }
@@ -60,6 +64,7 @@ function tableCreate() {
     var div = document.getElementById('robot-container');
     div.appendChild(tbl);
 }
+
 function placeContent(content_array) {
     var current_var;
     var i = 0;
@@ -95,15 +100,25 @@ function placeContent(content_array) {
     }
 }
 
-var ws = new WebSocket("ws://127.0.0.1:5678/");
+ws = new WebSocket("ws://127.0.0.1:5678/");
 ws.onmessage = function (e) {
+    ws.send("Message Received!");
     var content = e.data;
     var content_array = content.split(" ");
     var current_number_of_robots = parseInt(content_array[0]);
     if(current_number_of_robots > number_of_robots) {
-        console.log(current_number_of_robots);
         number_of_robots = current_number_of_robots;
         tableCreate();
     }
     placeContent(content_array);
 };
+ws.onopen = function() {
+    ws.send("Connection established!");
+    console.log("Connection established!");
+}
+
+function sendMessage() {
+    ws.send("hello");
+    console.log("sending hello...");
+}
+

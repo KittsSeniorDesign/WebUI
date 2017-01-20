@@ -5,6 +5,8 @@ import datetime
 import random
 import websockets
 import sys
+import threading
+import time
 
 print("Running version: " + str(sys.version).split()[0])
 
@@ -51,24 +53,29 @@ def add_robot():
     rlist.append(return_value)
     number_of_robots += 1
     
-async def time(websocket, path):
+async def send_data(websocket, path):
     while True:
         if number_of_robots == 0:
             add_robot()
         robot_simulator()
         for i,robot in enumerate(rlist):
             send_string = "{} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}".format(rlist[i][0],rlist[i][1],rlist[i][2],rlist[i][3],rlist[i][4],rlist[i][5],rlist[i][6])
-            # print("Sending: " + send_string)
             await websocket.send(send_string)
-        # time_to_sleep = random.random() * 0.0001;
-        # await asyncio.sleep(time_to_sleep)
-        # if time_to_sleep > 0:
-        if number_of_robots < 10:
+        if number_of_robots < 8:
             add_robot();
+        msg = await websocket.recv()
+        if 'Message Received!' not in msg:
+            print(msg)
+        time.sleep(0.01)
+        
+
+async def recv_data(websocket, path):
+    while True:
         msg = await websocket.recv()
         if msg:
             print(msg)
-start_server = websockets.serve(time, '127.0.0.1', 5678)
-
+    
+start_server = websockets.serve(send_data, '127.0.0.1', 5678)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
+    
