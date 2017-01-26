@@ -23,6 +23,23 @@ table {
 .value {
     color:rgb(136, 79, 3);
 }
+.addRobotButton {
+    background-color:black;
+    color:rgb(49, 84, 2);
+    border:1px solid rgb(49, 84, 2);
+    font-size:40px;
+    vertical-align:middle;
+    float:left;
+    width:172px;
+    height:154px;
+    margin-right:5px;
+    margin-bottom:5px;
+    margin-top:0px;
+}
+.addRobotButton:hover {
+    background-color:rgb(49, 84, 2);
+    color:black;
+}
 #col {
     display:inline-block;
     float:left;
@@ -57,7 +74,7 @@ table {
     display:inline-block;
     margin:20px;
     border:1px solid grey;
-    float:left;
+    float:right;
     width:50%;
     height:100%;
 }

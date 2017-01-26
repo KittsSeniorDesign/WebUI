@@ -5,7 +5,6 @@ import datetime
 import random
 import websockets
 import sys
-import threading
 import time
 
 print("Running version: " + str(sys.version).split()[0])
@@ -13,26 +12,42 @@ print("Running version: " + str(sys.version).split()[0])
 rlist = list()
 number_of_robots = int(0)
 
-def robot_simulator():
+async def producer():
     global number_of_robots
-    for i,robot in enumerate(rlist):
-        return_value = list()
-        r_vel = (random.random() - random.random()) * 200
-        r_hdn = (random.random() - random.random()) * 200
-        r_alt = (random.random() - random.random()) * 200
-        r_lcx = (random.random() - random.random()) * 200
-        r_lcy = (random.random() - random.random()) * 200
-        r_lcz = (random.random() - random.random()) * 200
-        n_r = i + 1
-        return_value.append(n_r)
-        return_value.append(r_vel)
-        return_value.append(r_hdn)   
-        return_value.append(r_alt)   
-        return_value.append(r_lcx)   
-        return_value.append(r_lcy)   
-        return_value.append(r_lcz)
-        rlist[i] = return_value
+    send_string = str()
+    if number_of_robots > 0:
+        for i,robot in enumerate(rlist):
+            return_value = list()
+            r_vel = (random.random() - random.random()) * 200
+            r_hdn = (random.random() - random.random()) * 200
+            r_alt = (random.random() - random.random()) * 200
+            r_lcx = (random.random() - random.random()) * 200
+            r_lcy = (random.random() - random.random()) * 200
+            r_lcz = (random.random() - random.random()) * 200
+            n_r = i + 1
+            return_value.append(n_r)
+            return_value.append(r_vel)
+            return_value.append(r_hdn)   
+            return_value.append(r_alt)   
+            return_value.append(r_lcx)   
+            return_value.append(r_lcy)   
+            return_value.append(r_lcz)
+            rlist[i] = return_value
+            send_string += '{} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} '.format(rlist[i][0],rlist[i][1],rlist[i][2],rlist[i][3],rlist[i][4],rlist[i][5],rlist[i][6])
+        time.sleep(0.01)
+        return send_string.strip()
+    else:
+        time.sleep(0.01)
+        return '0 0 0 0 0 0 0'
+    
+    
 
+async def consumer(message):
+    if 'Number of Robots: ' in message:
+        add_robot()
+    else:
+        print(message)
+        
 def add_robot():
     global number_of_robots
     return_value = list()
@@ -53,29 +68,27 @@ def add_robot():
     rlist.append(return_value)
     number_of_robots += 1
     
-async def send_data(websocket, path):
+async def handler(websocket, path):
     while True:
-        if number_of_robots == 0:
-            add_robot()
-        robot_simulator()
-        for i,robot in enumerate(rlist):
-            send_string = "{} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f} {:.2f}".format(rlist[i][0],rlist[i][1],rlist[i][2],rlist[i][3],rlist[i][4],rlist[i][5],rlist[i][6])
-            await websocket.send(send_string)
-        if number_of_robots < 8:
-            add_robot();
-        msg = await websocket.recv()
-        if 'Message Received!' not in msg:
-            print(msg)
-        time.sleep(0.01)
-        
+        listener_task = asyncio.ensure_future(websocket.recv())
+        producer_task = asyncio.ensure_future(producer())
+        done, pending = await asyncio.wait(
+            [listener_task, producer_task],
+            return_when=asyncio.FIRST_COMPLETED)
 
-async def recv_data(websocket, path):
-    while True:
-        msg = await websocket.recv()
-        if msg:
-            print(msg)
-    
-start_server = websockets.serve(send_data, '127.0.0.1', 5678)
+        if listener_task in done:
+            message = listener_task.result()
+            await consumer(message)
+        else:
+            listener_task.cancel()
+
+        if producer_task in done:
+            message = producer_task.result()
+            await websocket.send(message)
+        else:
+            producer_task.cancel()
+
+start_server = websockets.serve(handler, '127.0.0.1', 5678)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
-    
+                

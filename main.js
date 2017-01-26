@@ -1,5 +1,21 @@
 var number_of_robots = 0;
+var number_of_fields = 7;
+var single_robot_string = false;
 var ws;
+
+function addButtonCreate() {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'addRobotButton';
+    btn.style.display = 'inline-block';
+    btn.style.float = 'left';
+    btn.id = 'addRobotButton';
+    btn.onclick = sendNumberOfRobots;
+    var btn_txt = document.createTextNode('+');
+    btn.appendChild(btn_txt);
+    var div = document.getElementById('robot-container');
+    div.appendChild(btn);
+}
 
 function tableCreate() {
     var tbl = document.createElement('table');
@@ -62,7 +78,8 @@ function tableCreate() {
         tbl.appendChild(tr);
     }
     var div = document.getElementById('robot-container');
-    div.appendChild(tbl);
+    var btn = document.getElementById('addRobotButton');
+    div.insertBefore(tbl,btn);
 }
 
 function placeContent(content_array) {
@@ -100,25 +117,45 @@ function placeContent(content_array) {
     }
 }
 
+addButtonCreate();
+
 ws = new WebSocket("ws://127.0.0.1:5678/");
+
 ws.onmessage = function (e) {
-    ws.send("Message Received!");
     var content = e.data;
     var content_array = content.split(" ");
-    var current_number_of_robots = parseInt(content_array[0]);
+    var current_number_of_robots = parseInt(content_array[content_array.length - number_of_fields]);
     if(current_number_of_robots > number_of_robots) {
         number_of_robots = current_number_of_robots;
         tableCreate();
     }
-    placeContent(content_array);
-};
+    if(single_robot_string) {
+        placeContent(content_array);
+    } else {
+        for(var i = 0; i < content_array.length; i++) {
+            var robot_array = new Array(number_of_fields);
+            for(var j = 0; j < number_of_fields; j++) {
+                robot_array[j] = content_array[i * number_of_fields + j];
+            }
+            placeContent(robot_array);
+        }
+    }
+}
+
 ws.onopen = function() {
     ws.send("Connection established!");
     console.log("Connection established!");
 }
+ws.onclose = function() {
+    console.log("Connection closed!");
+}
+function sendNumberOfRobots() {
+    ws.send("Number of Robots: " + number_of_robots);
+    console.log("Sending number of robots: " + number_of_robots)
+}
 
-function sendMessage() {
-    ws.send("hello");
-    console.log("sending hello...");
+function sendMessage(msg) {
+    ws.send(msg);
+    console.log("Sending " + msg);
 }
 
