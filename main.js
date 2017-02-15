@@ -10,11 +10,31 @@ function addButtonCreate() {
     btn.style.display = 'inline-block';
     btn.style.float = 'left';
     btn.id = 'addRobotButton';
-    btn.onclick = sendNumberOfRobots;
+    btn.onclick = addRobot;
     var btn_txt = document.createTextNode('+');
     btn.appendChild(btn_txt);
     var div = document.getElementById('robot-container');
     div.appendChild(btn);
+}
+function modalCreate() {
+    var modal = document.createElement('div');
+    modal.id = 'modal-div';
+    modal.className = 'modal-div';
+    var modal_content = document.createElement('div');
+    modal_content.id = 'modal-content';
+    modal_content.className = 'modal-content';
+    var modal_content_close = document.createElement('span');
+    modal_content_close.className = 'close';
+    modal_content_close.onclick = function(){document.getElementById('modal-div').style.display = 'none'};
+    var modal_content_close_txt = document.createTextNode('x');
+    modal_content_close.appendChild(modal_content_close_txt);
+    modal_content.appendChild(modal_content_close);
+    modal.appendChild(modal_content);
+    var body = document.getElementsByTagName('body')[0];
+    body.appendChild(modal);
+}
+function addRobot() {
+    document.getElementById('modal-div').style.display = 'block';
 }
 
 function tableCreate() {
@@ -118,6 +138,7 @@ function placeContent(content_array) {
 }
 
 addButtonCreate();
+modalCreate();
 
 ws = new WebSocket("ws://127.0.0.1:5678/");
 
