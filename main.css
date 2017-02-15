@@ -1,42 +1,53 @@
 .modal-div {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 0px; /* Location of the box */
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 0px;
+    margin:0;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.40); /* Black w/ opacity */
-    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.40);
+    pointer-events:all;
 }
-
-/* Modal Content */
 .modal-content {
     background-color: white;
-    margin: auto;
-    padding: 0px;
-    border: 1px solid #888;
-    width: 60%;
+    padding:5px;
+    border: 1px solid black;
+    width: 80%;
+    height: 80%;
+    margin:0 auto;
+    margin-top:5%;
+    pointer-events: none;
 }
-
-/* The Close Button */
+.modal-content-header{
+    padding:0;
+    margin:0 auto;
+    width:100%;
+    background-color:white;
+}
+.add-robot-title {
+    margin:0 auto;
+    text-align:center;
+    font-size:35px;
+}
 .close {
-    color: grey;
+    color: black;
     float: right;
-    font-size: 28px;
-    font-weight: bold;
+    margin-top:-15px;
+    padding:0;
+    height:10px;
+    font-size: 30px;
+    pointer-events:all;
 }
-
 .close:hover,
 .close:focus {
     color: red;
     text-decoration: none;
     cursor: pointer;
 }
-
 h1 {
     text-align:center;
 }
@@ -44,28 +55,28 @@ h2 {
     text-align:center;
 }
 caption {
-    color:rgb(107, 37, 34);
+    color:black;
 }
 td {
     width:80px;
 }
 table {
-    border:1px solid rgb(49, 84, 2);
+    border:1px solid green;
     margin-right:5px;
     margin-bottom:5px;
     display:inline-block;
     float:left;
 }
 .label {
-    color:rgb(104, 104, 2);
+    color:black;
 }
 .value {
-    color:rgb(136, 79, 3);
+    color:black;
 }
 .addRobotButton {
-    background-color:black;
-    color:rgb(49, 84, 2);
-    border:1px solid rgb(49, 84, 2);
+    background-color:white;
+    color:black;
+    border:1px solid black;
     font-size:40px;
     vertical-align:middle;
     float:left;
@@ -76,8 +87,8 @@ table {
     margin-top:0px;
 }
 .addRobotButton:hover {
-    background-color:rgb(49, 84, 2);
-    color:black;
+    background-color:white;
+    color:green;
 }
 #col {
     display:inline-block;
@@ -91,23 +102,23 @@ table {
     margin-top:-5px;
     margin-left:-5px;
     margin-bottom:10px;
-    border-bottom:1px solid rgb(113, 14, 2);
+    border-bottom:1px solid black;
 }
 #robot-container {
-    border:1px solid rgb(113, 14, 2);
-    padding-left:5px;
-    padding-top:5px;
+    display:inline-block;
+    border:1px solid black;
+    margin-left:5px;
+    margin-top:5px;
     float:left;
-    width:708px;
+    width:200px;
+    height:100%;
     margin-bottom:20px;
 }
 #settings-container {
-    border:1px solid rgb(113, 14, 2);
-    padding-left:5px;
-    padding-top:5px;
-    padding-bottom:5px;
-    float:left;
-    width:708px;
+    display:inline-block;
+    border:1px solid black;
+    margin-left:20px;
+    width:200;
 }
 #graphics-container {
     display:inline-block;
@@ -118,6 +129,6 @@ table {
     height:100%;
 }
 body {
-    background-color:black;
-    color: rgb(100, 70, 51);
+    background-color:white;
+    color: black;
 }

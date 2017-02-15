@@ -23,15 +23,28 @@ function modalCreate() {
     var modal_content = document.createElement('div');
     modal_content.id = 'modal-content';
     modal_content.className = 'modal-content';
+    var modal_content_header = document.createElement('div');
+    modal_content_header.id = 'modal-content-header';
+    modal_content_header.className = 'modal-content-header';
     var modal_content_close = document.createElement('span');
     modal_content_close.className = 'close';
     modal_content_close.onclick = function(){document.getElementById('modal-div').style.display = 'none'};
     var modal_content_close_txt = document.createTextNode('x');
     modal_content_close.appendChild(modal_content_close_txt);
-    modal_content.appendChild(modal_content_close);
+    modal_content_header.appendChild(modal_content_close);
+    modal_content.appendChild(modal_content_header);
     modal.appendChild(modal_content);
     var body = document.getElementsByTagName('body')[0];
     body.appendChild(modal);
+    modalOptions();
+}
+function modalOptions() {
+    modal_content_header = document.getElementById('modal-content-header');
+    var title = document.createElement('div');
+    title.className = 'add-robot-title';
+    var title_txt = document.createTextNode('Add New Robot');
+    title.appendChild(title_txt);
+    modal_content_header.appendChild(title);
 }
 function addRobot() {
     document.getElementById('modal-div').style.display = 'block';
