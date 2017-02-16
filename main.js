@@ -214,11 +214,14 @@ function displaySettings() {
     } catch(err) {
         var robot_item_change_color = -1;
     }
-    console.log(robot_item_change_color);
     for(var i = 0; i < number_of_robots; i++) {
         var robot_item = document.querySelectorAll('.robot-item-' + (i + 1));
-        if(i == robot_item_change_color - 1)
-            var color = 'lightgrey';
+        if(i == robot_item_change_color - 1) {
+            if(robot_item[0].style.backgroundColor != 'lightgrey')
+                var color = 'lightgrey';
+            else
+                var color = 'white';
+        }
         else
             var color = 'white';
         for(var j = 0; j < robot_item.length; j++) {
@@ -289,7 +292,12 @@ function pageTableCreate() {
     tbl_div.appendChild(tbl);
     document.getElementsByTagName('body')[0].appendChild(tbl_div);
 }
-
+function settingsCreate() {
+    var settings = document.getElementById('settings-container');
+    var container = document.createElement('div');
+    container.id = 'settings-div-container';
+    
+}
 function tableCreate() {
     var tbl = document.createElement('table');
     tbl.id = "table_robot_"+number_of_robots;
