@@ -6,33 +6,25 @@ var ws;
 
 function addButtonCreate() {
     var btn_helper = document.createElement('div');
-    btn_helper.style.height = '18px';
+    btn_helper.style.height = field_line_height + 'px';
     
     var title = document.createElement('div');
     title.appendChild(document.createTextNode('Robot Container'));
     title.style.width = '100%';
     title.style.textAlign = 'center';
-    title.style.height = '18px';
+    title.style.height = field_line_height + 'px';
     
     var robot_item_container = document.createElement('div');
     robot_item_container.id = 'robot-item-container';
-    var h = document.getElementById('robot-container').offsetHeight - 18;
+    var h = document.getElementById('robot-container').offsetHeight - field_line_height;
     robot_item_container.style.width = '100%';
     robot_item_container.style.height = h + 'px';
     robot_item_container.style.backgroundColor = 'white';
     
-    var btn_container = document.createElement('div');
-    btn_container.style.zIndex = 1;
-    btn_container.style.float = 'right';
-    btn_container.style.height = '18px';
-    btn_container.style.width = '18px';
-    btn_container.style.position = 'relative';
-    btn_container.style.top = '-19px';
-    
     var btn = document.createElement('button');
     btn.type = 'button';
-    btn.style.height = '18px';
-    btn.style.width = '18px';
+    btn.style.height = field_line_height + 'px';
+    btn.style.width = field_line_height + 'px';
     btn.style.textAlign = 'center';
     btn.style.verticalAlign = 'middle';
     btn.style.padding = '0';
@@ -41,11 +33,14 @@ function addButtonCreate() {
     btn.style.backgroundColor = 'white';
     btn.style.color = 'black';
     btn.onclick = addRobot;
+    btn.style.float = 'right';
+    btn.style.zIndex = '1';
+    btn.style.position = 'relative';
+    btn.style.top = '-' + (field_line_height) + 'px';
+    btn.style.cursor = 'pointer';
     btn.innerHTML = '&#43;';
-    
-    btn_container.appendChild(btn);
     btn_helper.appendChild(title);
-    btn_helper.appendChild(btn_container);
+    btn_helper.appendChild(btn);
     document.getElementById('robot-container').appendChild(btn_helper);
     document.getElementById('robot-container').appendChild(robot_item_container);
 }
@@ -93,15 +88,21 @@ function addRobot(robot_number = number_of_robots) {
     rc.style.marginTop = '10px';
     rc.id = 'rc_' + number_of_robots;
     rc.className = 'robot';
+    rc.className += ' robot-item';
+    rc.className += ' robot-item-' + number_of_robots;
     var cap = document.createElement('div');
     cap.style.height = field_line_height + 'px';
     cap.style.textAlign = 'center';
     cap.style.borderBottom = '1px solid black';
     cap.style.width = '100%';
     cap.id = 'cap_' + number_of_robots
+    cap.className += 'robot-item';
+    cap.className += ' robot-item-' + number_of_robots;
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'btn_r_' + number_of_robots;
+    btn.className += ' robot-item';
+    btn.className += ' robot-item-' + number_of_robots;
     btn.style.position = 'relative';
     btn.id = 'remove_robot_button_' + number_of_robots;
     btn.style.top = '-' + field_line_height + 'px'
@@ -124,12 +125,18 @@ function addRobot(robot_number = number_of_robots) {
     field_flex_container.style.display = 'flex';
     field_flex_container.style.float = 'left';
     field_flex_container.style.flexDirection = 'column';
+    field_flex_container.id = 'robot_item_field_flex_container_' + number_of_robots;
+    field_flex_container.className = 'robot-item';
+    field_flex_container.className += ' robot-item-' + number_of_robots;
     var value_flex_container = document.createElement('div');
     value_flex_container.style.display = 'flex';
     value_flex_container.style.float = 'right';
     value_flex_container.style.flexDirection = 'column';
     value_flex_container.style.position = 'relative';
     value_flex_container.style.right = '-' + field_line_height + 'px';
+    value_flex_container.id = 'robot_item_value_flex_container_' + number_of_robots;
+    value_flex_container.className = 'robot-item';
+    value_flex_container.className += ' robot-item-' + number_of_robots;
     rc.appendChild(cap);
     rc.appendChild(btn);
     rc.appendChild(field_flex_container);
@@ -143,6 +150,8 @@ function addRobot(robot_number = number_of_robots) {
         current_field.style.paddingLeft = '2px';
         current_field.style.display = 'block';
         current_field.id = 'field_' + i + '_r_' + number_of_robots;
+        current_field.className = 'robot-item';
+        current_field.className += ' robot-item-' + number_of_robots;
         current_field.appendChild(document.createTextNode('Field_Name'));
         var current_value = document.createElement('div');
         current_value.style.height = field_line_height + 'px';
@@ -152,29 +161,70 @@ function addRobot(robot_number = number_of_robots) {
         current_value.style.float = 'right';
         current_value.style.paddingRight = '2px';
         current_value.id = 'value_' + i + '_r_' + number_of_robots;
+        current_value.className = 'robot-item';
+        current_value.className += ' robot-item-' + number_of_robots;
         current_value.appendChild(document.createTextNode('Value'));
         field_flex_container.appendChild(current_field);
         value_flex_container.appendChild(current_value);
     }
     container.appendChild(rc);
+    var all_robot_items = document.querySelectorAll('.robot-item');
+    for(var i = 0; i < all_robot_items.length; i++) {
+        if(all_robot_items[i].type != 'button')
+            all_robot_items[i].onclick = displaySettings;
+    }
 }
-function removeRobot() {
+function removeRobot(e) {
+    if (!e) var e = window.event;
+    e.cancelBubble = true;
+    if (e.stopPropagation) e.stopPropagation();
     number_of_robots--;
     robot_number_removed = parseInt(this.id.charAt(this.id.length-1));
     this.parentElement.parentElement.removeChild(document.getElementById('rc_' + robot_number_removed));
     for(var i = robot_number_removed + 1; i < (number_of_robots + 2); i++) {
         document.getElementById('rc_' + i).id = 'rc_' + (i - 1);
+        document.getElementById('rc_' + (i - 1)).classList.remove('robot-item-' + i);
+        document.getElementById('rc_' + (i - 1)).classList.add('robot-item-' + (i - 1));
         document.getElementById('remove_robot_button_' + i).id = 'remove_robot_button_' + (i - 1);
+        document.getElementById('remove_robot_button_' + (i - 1)).classList.remove('robot-item-' + i);
+        document.getElementById('remove_robot_button_' + (i - 1)).classList.add('robot-item-' + (i - 1));
         document.getElementById('cap_' + i).id = 'cap_' + (i - 1);
+        document.getElementById('cap_' + (i - 1)).classList.remove('robot-item-' + i);
+        document.getElementById('cap_' + (i - 1)).classList.add('robot-item-' + (i - 1));
         document.getElementById('cap_' + (i - 1)).innerHTML = 'Robot ' + (i - 1);
+        document.getElementById('robot_item_field_flex_container_' + i).id = 'robot_item_field_flex_container_' + (i - 1);
+        document.getElementById('robot_item_field_flex_container_' + (i - 1)).classList.remove('robot-item-' + i);
+        document.getElementById('robot_item_field_flex_container_' + (i - 1)).classList.add('robot-item-' + (i - 1));
+        document.getElementById('robot_item_value_flex_container_' + i).id = 'robot_item_value_flex_container_' + (i - 1);
+        document.getElementById('robot_item_value_flex_container_' + (i - 1)).classList.remove('robot-item-' + i);
+        document.getElementById('robot_item_value_flex_container_' + (i - 1)).classList.add('robot-item-' + (i - 1));
         for(var j = 0; j < number_of_fields; j++) {
             document.getElementById('field_' + j + '_r_' + i).id = 'field_' + j + '_r_' + (i - 1);
+            document.getElementById('field_' + j + '_r_' + (i - 1)).classList.remove('robot-item-' + i);
+            document.getElementById('field_' + j + '_r_' + (i - 1)).classList.add('robot-item-' + (i - 1));
             document.getElementById('value_' + j + '_r_' + i).id = 'value_' + j + '_r_' + (i - 1);
+            document.getElementById('value_' + j + '_r_' + (i - 1)).classList.remove('robot-item-' + i);
+            document.getElementById('value_' + j + '_r_' + (i - 1)).classList.add('robot-item-' + (i - 1));
         }
     }
 }
 function displaySettings() {
-    
+    try {
+        var robot_item_change_color = parseInt(this.id.charAt(this.id.length-1));
+    } catch(err) {
+        var robot_item_change_color = -1;
+    }
+    console.log(robot_item_change_color);
+    for(var i = 0; i < number_of_robots; i++) {
+        var robot_item = document.querySelectorAll('.robot-item-' + (i + 1));
+        if(i == robot_item_change_color - 1)
+            var color = 'lightgrey';
+        else
+            var color = 'white';
+        for(var j = 0; j < robot_item.length; j++) {
+            robot_item[j].style.backgroundColor = color;
+        }
+    }
 }
 function pageTitleCreate() {
     var title = document.createElement('div');
