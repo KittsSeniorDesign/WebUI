@@ -10,7 +10,6 @@ nss.connect(9001, '127.0.0.1', function() {
 });
 
 nss.on('data', function(data) {
-    console.log(data.type);
     console.log('Received on TCP: ' + data);
     writeToTCP(data);
 });

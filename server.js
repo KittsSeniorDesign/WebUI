@@ -19,6 +19,9 @@ const nss = net.createServer((c) => {
         console.log('Received on TCP: ' + m);
         sendToWebsocket(m);
     });
+    c.on('error', (e) => {
+        console.log('An error has occured: ' + e.message); 
+    });
 });
 
 nss.listen(9001, () => {

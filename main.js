@@ -1,5 +1,5 @@
 var number_of_robots = 0;
-var number_of_fields = 4;
+var number_of_fields = 8;
 var field_line_height = 18;
 var single_robot_string = false;
 var ws;
@@ -145,14 +145,42 @@ function addRobot(robot_number = number_of_robots) {
         var current_field = document.createElement('div');
         current_field.style.height = field_line_height + 'px';
         current_field.style.textAlign = 'left';
-        current_field.style.margin = '0 auto';
+        current_field.style.margin = 'none';
         current_field.style.float = 'left';
         current_field.style.paddingLeft = '2px';
         current_field.style.display = 'block';
         current_field.id = 'field_' + i + '_r_' + number_of_robots;
         current_field.className = 'robot-item';
         current_field.className += ' robot-item-' + number_of_robots;
-        current_field.appendChild(document.createTextNode('Field_Name'));
+        switch(i) {
+            case 0:
+                current_field.innerHTML = 'Robot ID';
+                break;
+            case 1:
+                current_field.innerHTML = 'Type';
+                break;
+            case 2:
+                current_field.innerHTML = 'Battery';
+                break;
+            case 3:
+                current_field.innerHTML = 'Position X';
+                break;
+            case 4:
+                current_field.innerHTML = 'Position Y';
+                break;
+            case 5:
+                current_field.innerHTML = 'Position Z';
+                break;
+            case 6:
+                current_field.innerHTML = 'Velocity';
+                break;
+            case 7:
+                current_field.innerHTML = 'Heading';
+                break;
+            default:
+                current_field.innerHTML = 'N/A';
+                break;
+        }
         var current_value = document.createElement('div');
         current_value.style.height = field_line_height + 'px';
         current_value.style.textAlign = 'right';
@@ -163,7 +191,7 @@ function addRobot(robot_number = number_of_robots) {
         current_value.id = 'value_' + i + '_r_' + number_of_robots;
         current_value.className = 'robot-item';
         current_value.className += ' robot-item-' + number_of_robots;
-        current_value.appendChild(document.createTextNode('Value'));
+        current_value.appendChild(document.createTextNode('0'));
         field_flex_container.appendChild(current_field);
         value_flex_container.appendChild(current_value);
     }
