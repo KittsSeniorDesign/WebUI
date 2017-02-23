@@ -1,5 +1,5 @@
 var number_of_robots = 0;
-var number_of_fields = 7;
+var number_of_fields = 4;
 var field_line_height = 18;
 var single_robot_string = false;
 var ws;
@@ -100,7 +100,7 @@ function addRobot(robot_number = number_of_robots) {
     cap.className += ' robot-item-' + number_of_robots;
     var btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'btn_r_' + number_of_robots;
+    // btn.className = 'btn_r_' + number_of_robots;
     btn.className += ' robot-item';
     btn.className += ' robot-item-' + number_of_robots;
     btn.style.position = 'relative';
@@ -179,6 +179,16 @@ function removeRobot(e) {
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
     number_of_robots--;
+    var counter = 0;
+    var num;
+    for(var i = this.id.length - 1; i > -1; i--) {
+        if(isNaN(this.id.charAt(i)))
+            break;
+        else
+            num += this.id.charAt(i);
+        counter++;
+    }
+    console.log(num);
     robot_number_removed = parseInt(this.id.charAt(this.id.length-1));
     this.parentElement.parentElement.removeChild(document.getElementById('rc_' + robot_number_removed));
     for(var i = robot_number_removed + 1; i < (number_of_robots + 2); i++) {
@@ -402,31 +412,39 @@ pageTableCreate();
 addButtonCreate();
 modalCreate();
 
-ws = new WebSocket("ws://127.0.0.1:5678/");
+ws = new WebSocket("ws://127.0.0.1:9002/");
 
-ws.onmessage = function (e) {
-    var content = e.data;
-    var content_array = content.split(" ");
-    var current_number_of_robots = parseInt(content_array[content_array.length - number_of_fields]);
-    if(current_number_of_robots > number_of_robots) {
-        number_of_robots = current_number_of_robots;
-        tableCreate();
+ws.onmessage = function(m) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        console.log(reader.result);
     }
-    if(single_robot_string) {
-        placeContent(content_array);
-    } else {
-        for(var i = 0; i < content_array.length; i++) {
-            var robot_array = new Array(number_of_fields);
-            for(var j = 0; j < number_of_fields; j++) {
-                robot_array[j] = content_array[i * number_of_fields + j];
-            }
-            placeContent(robot_array);
-        }
-    }
+    reader.readAsText(m.data);
 }
 
+// ws.onmessage = function (e) {
+//     var content = e.data;
+//     var content_array = content.split(" ");
+//     var current_number_of_robots = parseInt(content_array[content_array.length - number_of_fields]);
+//     if(current_number_of_robots > number_of_robots) {
+//         number_of_robots = current_number_of_robots;
+//         tableCreate();
+//     }
+//     if(single_robot_string) {
+//         placeContent(content_array);
+//     } else {
+//         for(var i = 0; i < content_array.length; i++) {
+//             var robot_array = new Array(number_of_fields);
+//             for(var j = 0; j < number_of_fields; j++) {
+//                 robot_array[j] = content_array[i * number_of_fields + j];
+//             }
+//             placeContent(robot_array);
+//         }
+//     }
+// }
+
 ws.onopen = function() {
-    ws.send("Connection established!");
+    // ws.send("Connection established!");
     console.log("Connection established!");
 }
 ws.onclose = function() {
