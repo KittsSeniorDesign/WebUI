@@ -6,5 +6,41 @@
     </head>
     <body>
         <script src="main.js"></script>
+        <div id="title-div">Multi-bot Easy Control Hierarchy</div>
+        <div id="page_table-div">
+            <table id="page-table" class="page-table">
+                <tr id="page_table_row_1">
+                    <td id="page_table_col_11" rowspan="2">
+                        <div id="robot-container">
+                            <div id="robot-container-helper">
+                                <div id="robot-container-title">Robot Container</div>
+                                <button type="button" onclick="addRobot()" id="add-robot-button">+</button>
+                            </div>
+                            <div id="robot-item-container"></div>
+                        </div>
+                    </td>
+                    <td id="page_table_col_12">
+                        <div id="graphics-container">
+                            <div id="graphics-container-title">Graphics Container</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="page_table_row_2">
+                    <td id="page_table_col_21">
+                        <div id="settings-container">
+                            <div id="settings-container-title">Settings Container</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="modal-div" class="modal-div">
+            <div id="modal-content" class="modal-content">
+                <div id="modal-content-header" class="modal-content-header">
+                    <span class="close">×</span>
+                    <div class="add-robot-title">Add New Robot</div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
