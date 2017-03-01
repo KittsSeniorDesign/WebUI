@@ -6,39 +6,55 @@
     </head>
     <body>
         <script src="main.js"></script>
-        <div id="title-div">Multi-bot Easy Control Hierarchy</div>
+        <div id="title-div" class="unselectable">Multi-bot Easy Control Hierarchy</div>
         <div id="page_table-div">
             <table id="page-table" class="page-table">
                 <tr id="page_table_row_1">
                     <td id="page_table_col_11" rowspan="2">
                         <div id="robot-container">
                             <div id="robot-container-helper">
-                                <div id="robot-container-title">Robot Container</div>
-                                <button type="button" onclick="addRobot()" id="add-robot-button">+</button>
+                                <div id="robot-container-title" class="unselectable">Robot Container</div>
+                                <button type="button" onclick="showModal()" id="add-robot-button" class="unselectable">+</button>
                             </div>
                             <div id="robot-item-container"></div>
                         </div>
                     </td>
                     <td id="page_table_col_12">
                         <div id="graphics-container">
-                            <div id="graphics-container-title">Graphics Container</div>
+                            <div id="graphics-container-title" class="unselectable">Graphics Container</div>
                         </div>
                     </td>
                 </tr>
                 <tr id="page_table_row_2">
                     <td id="page_table_col_21">
                         <div id="settings-container">
-                            <div id="settings-container-title">Settings Container</div>
+                            <div id="settings-container-title" class="unselectable">Settings Container</div>
                         </div>
                     </td>
                 </tr>
             </table>
         </div>
-        <div id="modal-div" class="modal-div">
-            <div id="modal-content" class="modal-content">
-                <div id="modal-content-header" class="modal-content-header">
-                    <span class="close">×</span>
-                    <div class="add-robot-title">Add New Robot</div>
+        <div id="modal-div">
+            <div id="modal-content">
+                <div id="modal-content-header">
+                    <span class="close-button unselectable" onclick="hideModal()">&times;</span>
+                    <div id="add-robot-title" class="unselectable">Add New Robot</div>
+                </div>
+                <div id="modal-content-container">
+                    <div id="options-container">
+                        <div id="communication-protocol-selection">
+                            <div id="communication-protocol-selection-title" class="unselectable">Communication Protocol</div>
+                            <select id="communication-protoccol-selection-select" class="unselectable">
+                                <option value="Serial" class="unselectable">Serial</option>
+                                <option value="Wifi" class="unselectable">WiFi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="modal-content-footer">
+                    <div id="modal-add-button-helper" onclick="addRobot()">
+                        <div id="modal-add-button" class="unselectable">Add Robot!</div>
+                    </div>
                 </div>
             </div>
         </div>

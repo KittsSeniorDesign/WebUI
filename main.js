@@ -4,10 +4,14 @@ var field_line_height = 18;
 var single_robot_string = false;
 var ws;
 
-function addRobotOptions() {
+function showModal() {
     document.getElementById('modal-div').style.display = 'block';
 }
+function hideModal() {
+    document.getElementById('modal-div').style.display = 'none';
+}
 function addRobot() {
+    hideModal();
     number_of_robots += 1;
     var container = document.getElementById('robot-item-container');
     var rc = document.createElement('div');
@@ -21,12 +25,14 @@ function addRobot() {
     cap.classList.add('robot-item-caption');
     cap.classList.add('robot-item');
     cap.classList.add('robot-item-' + number_of_robots);
+    cap.classList.add('unselectable');
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.id = 'remove_robot_button_' + number_of_robots;
     btn.classList.add('remove-robot-button');
     btn.classList.add('robot-item');
     btn.classList.add('robot-item-' + number_of_robots);
+    btn.classList.add('unselectable');
     btn.onclick = removeRobot;
     btn.innerHTML = '-';
     cap.innerHTML = 'Robot ' + number_of_robots;
@@ -50,6 +56,7 @@ function addRobot() {
         current_field.classList.add('display-field');
         current_field.classList.add('robot-item');
         current_field.classList.add('robot-item-' + number_of_robots);
+        current_field.classList.add('unselectable');
         switch(i) {
             case 0:
                 current_field.innerHTML = 'Robot ID'; break;
@@ -75,6 +82,7 @@ function addRobot() {
         current_value.classList.add('display-value');
         current_value.classList.add('robot-item');
         current_value.classList.add('robot-item-' + number_of_robots);
+        current_value.classList.add('unselectable');
         current_value.appendChild(document.createTextNode('0'));
         field_flex_container.appendChild(current_field);
         value_flex_container.appendChild(current_value);
@@ -138,13 +146,14 @@ function displaySettings() {
     for(var i = 0; i < number_of_robots; i++) {
         var robot_item = document.querySelectorAll('.robot-item-' + (i + 1));
         if(i == robot_item_change_color - 1) {
-            if(robot_item[0].style.backgroundColor != 'lightgrey')
-                var color = 'lightgrey';
-            else
-                var color = 'white';
+            if(robot_item[0].style.backgroundColor != 'rgb(24, 24, 24)')
+                var color = 'rgb(24, 24, 24)';
+            else {
+                var color = 'rgb(34, 34, 34)';
+            }
+        } else {
+            var color = 'rgb(34, 34, 34)';
         }
-        else
-            var color = 'white';
         for(var j = 0; j < robot_item.length; j++) {
             robot_item[j].style.backgroundColor = color;
         }
