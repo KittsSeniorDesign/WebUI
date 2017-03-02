@@ -54,12 +54,10 @@
                                 </select>
                             </div>
                             <div id="communication-protocol-ip-container">
-                                <input type="number" id="communication-protocol-ip-field-1" class="communication-protocol-ip-field" placeholder=000>.
+                                <input type="number" id="communication-protocol-ip-field-1" class="communication-protocol-ip-field" placeholder="000"/><span>.</span>
                                 <input type="number" id="communication-protocol-ip-field-2" class="communication-protocol-ip-field" placeholder=000>.
                                 <input type="number" id="communication-protocol-ip-field-3" class="communication-protocol-ip-field" placeholder=000>.
-                                <input type="number" id="communication-protocol-ip-field-4" class="communication-protocol-ip-field" placeholder=000>
-                            </div>
-                            <div id="communication-protocol-port-container">
+                                <input type="number" id="communication-protocol-ip-field-4" class="communication-protocol-ip-field" placeholder=000>:
                                 <input type="number" id="communication-protocol-port-field" placeholder="65535">
                             </div>
                             <div id="communication-protocol-serial-container">
@@ -77,6 +75,14 @@
                                     <option value="holonomic" class="type-of-robot-option unselectable">Three-Wheeled Holonomic</option>
                                     <option value="quad" class="type-of-robot-option unselectable">Quadcopter</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div id="name-of-robot-selection">
+                            <div id="name-of-robot-selection-title-container">
+                                <div id="name-of-robot-selection-title" class="unselectable">Name of Robot</div>
+                            </div>
+                            <div id="name-of-robot-selection-select-container">
+                                <input type="text" id="name-of-robot-field" placeholder="Robot #">
                             </div>
                         </div>
                     </div>

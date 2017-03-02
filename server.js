@@ -17,7 +17,9 @@ const nss = net.createServer((c) => {
     });
     c.on('data', (m) => {
         console.log('Received ' + c.bytesRead + ' bytes on TCP: ' + m);
-        sendToWebsocket(m);
+        if (websocketClient) {
+            sendToWebsocket(m);
+        }
     });
     c.on('error', (e) => {
         console.log('An error has occured: ' + e.message); 
@@ -35,9 +37,11 @@ wss.on('connection', (ws) => {
     });
     ws.on('end', () => {
         console.log('Websocket client has disconnected.');
+        websocketClient = undefined;
     })
     ws.on('error', (e) => {
         console.log('An error has occured: ' + e.message);
+        websocketClient = undefined;
     });
     console.log('Websocket client has connected.');
     websocketClient = ws;

@@ -97,17 +97,12 @@ input::-webkit-inner-spin-button {
 }
 #communication-protocol-ip-container {
     display:none;
-    width:128px;
+    width:177px;
     margin:0 auto;
     margin-bottom:5vh;
 }
-#communication-protocol-port-container {
-    display:none;
-    width:42px;
-    margin:0 auto;
-}
 #communication-protocol-port-field {
-    width:42px  ;
+    width:36px  ;
     background-color:rgb(34, 34, 34);
     color:rgb(192, 192, 192);
     height:14px;
@@ -237,6 +232,10 @@ input::-webkit-inner-spin-button {
     width: 100%;
     text-align: center;
     height: 18px;
+}
+#name-of-robot-selection-title-container {
+    margin:0 auto;
+    margin-bottom:2vh;
 }
 #add-robot-button {
     height: 18px;
