@@ -1,4 +1,4 @@
-#modal-div {
+    #modal-div {
     display: none;
     position: fixed;
     z-index: 1;
@@ -27,6 +27,7 @@
     height:5vh;
     padding:0;
     margin:0 auto;
+    margin-bottom:5vh;
     width:100%;
     background-color:rgb(34, 34, 34);
 }
@@ -73,7 +74,7 @@
     outline:none;
     text-align:center;
     margin:0 auto;
-    margin-bottom:5vh;
+    margin-bottom:2vh;
 }
 #type-of-robot-selection-select {
     color:rgb(192, 192, 192);
@@ -84,11 +85,12 @@
 }
 #type-of-robot-selection-title-container {
     margin:0 auto;
-    margin-bottom:5vh;
+    margin-bottom:2vh;
     width:93px;
 }
 #communication-protocol-selection-title-container {
-    margin:5vh auto;
+    margin:0 auto;
+    margin-bottom:2vh;
     width:164px;
 }
 input::-webkit-outer-spin-button,
@@ -99,7 +101,7 @@ input::-webkit-inner-spin-button {
     display:none;
     width:177px;
     margin:0 auto;
-    margin-bottom:5vh;
+    margin-bottom:2vh;
 }
 #communication-protocol-port-field {
     width:36px  ;
@@ -113,12 +115,13 @@ input::-webkit-inner-spin-button {
     text-align:center;
 }
 #communication-protocol-port-field:focus::-webkit-input-placeholder {
-    color:rgb(34, 34, 34);
+    color:rgba(0, 0, 0, 0);
 }
 #communication-protocol-serial-container {
     display:none;
     width:100%;
     margin:0 auto;
+    margin-bottom:2vh;
 }
 #type-of-robot-selection-select-container {
     width:161px;
@@ -136,7 +139,7 @@ input::-webkit-inner-spin-button {
     display:inline;
 }
 .communication-protocol-ip-field:focus::-webkit-input-placeholder {
-    color:rgb(34, 34, 34);
+    color:rgba(0, 0, 0, 0);
 }
 #communication-protocol-serial-field {
     background-color:rgb(34, 34, 34);
@@ -153,13 +156,14 @@ input::-webkit-inner-spin-button {
     outline:none;
 }
 #communication-protocol-serial-field:focus::-webkit-input-placeholder {
-    color:rgb(34, 34, 34);
+    color:rgba(0, 0, 0, 0);
 }
 #add-robot-title {
     height:5vh;
     margin:0 auto;
     text-align:center;
     font-size:24px;
+    width:158px;
 }
 #add-robot-settings-container {
     height:73vh;
@@ -236,6 +240,26 @@ input::-webkit-inner-spin-button {
 #name-of-robot-selection-title-container {
     margin:0 auto;
     margin-bottom:2vh;
+    width:99px;
+}
+#name-of-robot-selection-select-container {
+    margin:0 auto;
+    width:10vw;
+    margin-bottom:2vh;
+}
+#name-of-robot-field {
+    background-color:rgb(34, 34, 34);
+    color:rgb(192, 192, 192);
+    width:10vw;
+    height:14px;
+    font-size:20;
+    border:1px solid rgb(24, 24, 24);
+    margin:0 auto;
+    outline:none;
+    text-align:center; 
+}
+#name-of-robot-field:focus::-webkit-input-placeholder {
+    color:rgba(0, 0, 0, 0);
 }
 #add-robot-button {
     height: 18px;
@@ -264,7 +288,6 @@ input::-webkit-inner-spin-button {
 }
 #communication-protocol-selection {
     width:100%;
-    height:35vh;
 }
 #type-of-robot-selection {
     width:100%;
