@@ -10,8 +10,18 @@ function showModal() {
 function hideModal() {
     document.getElementById('modal-div').style.display = 'none';
 }
+function getNewRobotSettings() {
+    var comm_selection = document.getElementById('communication-protocol-selection-select');
+    var comm_selection_val = comm_selection.value;
+    comm_selection.value = 'none';
+    checkCommOption();
+    var type_selection = document.getElementById('type-of-robot-selection-select');
+    var type_selection_val = type_selection.value;
+    type_selection.value = 'none';
+}
 function addRobot() {
     hideModal();
+    getNewRobotSettings();
     number_of_robots += 1;
     var container = document.getElementById('robot-item-container');
     var rc = document.createElement('div');
@@ -92,6 +102,25 @@ function addRobot() {
     for(var i = 0; i < all_robot_items.length; i++) {
         if(all_robot_items[i].type != 'button')
             all_robot_items[i].onclick = displaySettings;
+    }
+}
+function checkCommOption() {
+    var selection = document.getElementById('communication-protocol-selection-select').value;
+    var wifi_ip = document.getElementById('communication-protocol-ip-container');
+    var wifi_port = document.getElementById('communication-protocol-port-container');
+    var serial = document.getElementById('communication-protocol-serial-container');
+    if(selection == 'serial') {
+        serial.style.display = 'block';
+        wifi_ip.style.display = 'none';
+        wifi_port.style.display = 'none';
+    } else if(selection == 'wifi') {
+        serial.style.display = 'none';
+        wifi_ip.style.display = 'block';
+        wifi_port.style.display = 'block';
+    } else {
+        serial.style.display = 'none';
+        wifi_ip.style.display = 'none';
+        wifi_port.style.display = 'none';
     }
 }
 function removeRobot(e) {

@@ -17,7 +17,7 @@
     z-index: 2;
     padding:5px;
     border: 1px solid black;
-    width: 80vw;
+    width: 30vw;
     height: 80vh;
     margin:0 auto;
     margin-top:10vh;
@@ -39,10 +39,13 @@
     width:100%;
 }
 #modal-add-button-helper {
+    position:absolute;
+    bottom:10vh;
+    left:45vw;
     height:5vh;
     padding:0;
     margin:0 auto;
-    width:20%;
+    width:10vw;
     text-align:center;
     background-color:rgb(24, 24, 24);
     pointer-events:all;
@@ -58,6 +61,104 @@
 }
 #options-container {
     pointer-events:all;
+}
+#communication-protocol-selection-select-container {
+    width:51px;
+    margin:0 auto;
+}
+#communication-protocol-selection-select {
+    color:rgb(192, 192, 192);
+    border:1px solid rgb(24, 24, 24);
+    background-color:rgb(34, 34, 34);
+    outline:none;
+    text-align:center;
+    margin:0 auto;
+    margin-bottom:5vh;
+}
+#type-of-robot-selection-select {
+    color:rgb(192, 192, 192);
+    border:1px solid rgb(24, 24, 24);
+    background-color:rgb(34, 34, 34);
+    outline:none;
+    text-align:center;
+}
+#type-of-robot-selection-title-container {
+    margin:0 auto;
+    margin-bottom:5vh;
+    width:93px;
+}
+#communication-protocol-selection-title-container {
+    margin:5vh auto;
+    width:164px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+#communication-protocol-ip-container {
+    display:none;
+    width:128px;
+    margin:0 auto;
+    margin-bottom:5vh;
+}
+#communication-protocol-port-container {
+    display:none;
+    width:42px;
+    margin:0 auto;
+}
+#communication-protocol-port-field {
+    width:42px  ;
+    background-color:rgb(34, 34, 34);
+    color:rgb(192, 192, 192);
+    height:14px;
+    font-size:20;
+    border:1px solid rgb(24, 24, 24);
+    margin:0 auto;
+    outline:none;
+    text-align:center;
+}
+#communication-protocol-port-field:focus::-webkit-input-placeholder {
+    color:rgb(34, 34, 34);
+}
+#communication-protocol-serial-container {
+    display:none;
+    width:100%;
+    margin:0 auto;
+}
+#type-of-robot-selection-select-container {
+    width:161px;
+    margin:0 auto;
+}
+.communication-protocol-ip-field {
+    background-color:rgb(34, 34, 34);
+    color:rgb(192, 192, 192);
+    width:22px;
+    height:14px;
+    font-size:20;
+    border:1px solid rgb(24, 24, 24);
+    margin:0 auto;
+    outline:none;
+    display:inline;
+}
+.communication-protocol-ip-field:focus::-webkit-input-placeholder {
+    color:rgb(34, 34, 34);
+}
+#communication-protocol-serial-field {
+    background-color:rgb(34, 34, 34);
+    color:rgb(192, 192, 192);
+    border:1px solid rgb(24, 24, 24);
+    position:relative;
+    left:10vw;
+    width:10vw;
+    text-align:center;
+    overflow:auto;
+    height:14px;
+    font-size:20;
+    margin:0 auto;
+    outline:none;
+}
+#communication-protocol-serial-field:focus::-webkit-input-placeholder {
+    color:rgb(34, 34, 34);
 }
 #add-robot-title {
     height:5vh;
@@ -161,6 +262,14 @@
     width: 100%;
     height: 657px;
     background-color: rgb(34, 34, 34);
+}
+#communication-protocol-selection {
+    width:100%;
+    height:35vh;
+}
+#type-of-robot-selection {
+    width:100%;
+    height:35vh;
 }
 #graphics-container-title {
     padding:5px;

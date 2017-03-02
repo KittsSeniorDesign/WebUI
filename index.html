@@ -43,11 +43,41 @@
                 <div id="modal-content-container">
                     <div id="options-container">
                         <div id="communication-protocol-selection">
-                            <div id="communication-protocol-selection-title" class="unselectable">Communication Protocol</div>
-                            <select id="communication-protoccol-selection-select" class="unselectable">
-                                <option value="Serial" class="unselectable">Serial</option>
-                                <option value="Wifi" class="unselectable">WiFi</option>
-                            </select>
+                            <div id="communication-protocol-selection-title-container">
+                                <div id="communication-protocol-selection-title" class="unselectable">Communication Protocol</div>
+                            </div>
+                            <div id="communication-protocol-selection-select-container">
+                                <select id="communication-protocol-selection-select" class="unselectable" onchange="checkCommOption()">
+                                    <option value="none" class="communication-protocol-option unselectable">  </option>
+                                    <option value="serial" class="communication-protocol-option unselectable">Serial</option>
+                                    <option value="wifi" class="communication-protocol-option unselectable">WiFi</option>
+                                </select>
+                            </div>
+                            <div id="communication-protocol-ip-container">
+                                <input type="number" id="communication-protocol-ip-field-1" class="communication-protocol-ip-field" placeholder=000>.
+                                <input type="number" id="communication-protocol-ip-field-2" class="communication-protocol-ip-field" placeholder=000>.
+                                <input type="number" id="communication-protocol-ip-field-3" class="communication-protocol-ip-field" placeholder=000>.
+                                <input type="number" id="communication-protocol-ip-field-4" class="communication-protocol-ip-field" placeholder=000>
+                            </div>
+                            <div id="communication-protocol-port-container">
+                                <input type="number" id="communication-protocol-port-field" placeholder="65535">
+                            </div>
+                            <div id="communication-protocol-serial-container">
+                                <input type="text" id="communication-protocol-serial-field" placeholder="/dev/null">
+                            </div>
+                        </div>
+                        <div id="type-of-robot-selection">
+                            <div id="type-of-robot-selection-title-container">
+                                <div id="type-of-robot-selection-title" class="unselectable">Type of Robot</div>
+                            </div>
+                            <div id="type-of-robot-selection-select-container">
+                                <select id="type-of-robot-selection-select" class="unselectable">
+                                    <option value="none" class="type-of-robot-option unselectable"> </option>
+                                    <option value="differential" class="type-of-robot-option unselectable">Differential Drive</option>
+                                    <option value="holonomic" class="type-of-robot-option unselectable">Three-Wheeled Holonomic</option>
+                                    <option value="quad" class="type-of-robot-option unselectable">Quadcopter</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
