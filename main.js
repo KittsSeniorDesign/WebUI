@@ -1,27 +1,75 @@
 var number_of_robots = 0;
-var number_of_fields = 8;
+var number_of_fields = 9;
 var field_line_height = 18;
 var single_robot_string = false;
 var ws;
+var current_robot_list = [];
+var data_timeout = 2000;
 
-function showModal() {
-    document.getElementById('modal-div').style.display = 'block';
+var data_timeout_event = new Event('dataTimeout');
+
+function requestDT() {
+    if(ws.readyState == 1) {
+        ws.send('requestDTconfig()');
+        console.log('Requesting channels and sinks from DataTurbine...');
+    } else {
+        window.alert('Not connected to server.');
+    }
 }
-function hideModal() {
-    document.getElementById('modal-div').style.display = 'none';
+function reconfigureDT(sinkName,chanName) {
+    if(ws.readyState == 1) {
+        ws.send('reconfSink2Chan(' + sinkName + ', ' + chanName + ')');
+        console.log('Sending updated configuration to DataTurbine.');
+    } else {
+        window.alert('Not connected to server.')
+    }
 }
-function getNewRobotSettings() {
-    var comm_selection = document.getElementById('communication-protocol-selection-select');
-    var comm_selection_val = comm_selection.value;
-    comm_selection.value = 'none';
-    checkCommOption();
-    var type_selection = document.getElementById('type-of-robot-selection-select');
-    var type_selection_val = type_selection.value;
-    type_selection.value = 'none';
+function setDT() {
+    
+}
+function resetValues(r) {
+    r.values.forEach((value) => {
+       value.innerHTML = '0';
+    });
+}
+function timer(r) {
+    clearTimeout(r.timeRemaining);
+    r.timeRemaining = setTimeout(() => {
+        resetValues(r);
+        r.values[number_of_fields-1].innerHTML = 'Disconnected';
+        r.values[number_of_fields-1].classList.remove('status-connected');
+        r.values[number_of_fields-1].classList.add('status-disconnected');
+    } ,data_timeout);
+}
+function updateRobot(vars) {
+    current_robot_list.forEach((robot) => {
+        if(robot.values[0].innerHTML === vars[0]) {
+            robot.values.forEach((value,i) => {
+                if(robot.fields[i].innerHTML === 'Status') {
+                    value.innerHTML = 'Connected';
+                    value.classList.remove('status-disconnected');
+                    value.classList.add('status-connected');
+                } else {
+                   value.innerHTML = vars[i];
+                }
+            });
+            timer(robot);
+        }
+    });
+}
+function checkMessage(m) {
+    if(m.includes('DTConfig: ')) {
+        console.log('Received channels and sinks from DataTurbine.');
+        setDT(m);
+    } else if(m.includes('robot_')) {
+        var robot_id = m.split(',')[0].slice(6);
+        var robot_vars = m.split(',');
+        robot_vars[0] = robot_id;
+        console.log('Received updated information from robot_' + robot_id + '.');
+        updateRobot(robot_vars);
+    }
 }
 function addRobot() {
-    hideModal();
-    getNewRobotSettings();
     number_of_robots += 1;
     var container = document.getElementById('robot-item-container');
     var rc = document.createElement('div');
@@ -60,6 +108,11 @@ function addRobot() {
     rc.appendChild(btn);
     rc.appendChild(field_flex_container);
     rc.appendChild(value_flex_container);
+    var robot = {
+        fields: [],
+        values: [],
+        timeRemaining: 0
+    };
     for(var i = 0; i < number_of_fields; i++) {
         var current_field = document.createElement('div');
         current_field.id = 'field_' + i + '_r_' + number_of_robots;
@@ -67,6 +120,7 @@ function addRobot() {
         current_field.classList.add('robot-item');
         current_field.classList.add('robot-item-' + number_of_robots);
         current_field.classList.add('unselectable');
+        var val_id;
         switch(i) {
             case 0:
                 current_field.innerHTML = 'Robot ID'; break;
@@ -84,8 +138,13 @@ function addRobot() {
                 current_field.innerHTML = 'Velocity'; break;
             case 7:
                 current_field.innerHTML = 'Heading'; break;
+            case 8:
+                current_field.innerHTML = 'Status'; 
+                val_id = 'status';
+                break;
             default:
-                current_field.innerHTML = 'N/A'; break;
+                current_field.innerHTML = 'N/A'; 
+                break;
         }
         var current_value = document.createElement('div');
         current_value.id = 'value_' + i + '_r_' + number_of_robots;
@@ -93,34 +152,22 @@ function addRobot() {
         current_value.classList.add('robot-item');
         current_value.classList.add('robot-item-' + number_of_robots);
         current_value.classList.add('unselectable');
-        current_value.appendChild(document.createTextNode('0'));
+        if(val_id === 'status') {
+            current_value.classList.add('status-disconnected');
+            current_value.innerHTML = 'Disconnected';
+        } else
+            current_value.innerHTML = '0';
         field_flex_container.appendChild(current_field);
         value_flex_container.appendChild(current_value);
+        robot.fields.push(current_field);
+        robot.values.push(current_value);
     }
+    current_robot_list.push(robot);
     container.appendChild(rc);
     var all_robot_items = document.querySelectorAll('.robot-item');
     for(var i = 0; i < all_robot_items.length; i++) {
         if(all_robot_items[i].type != 'button')
             all_robot_items[i].onclick = displaySettings;
-    }
-}
-function checkCommOption() {
-    var selection = document.getElementById('communication-protocol-selection-select').value;
-    var wifi_ip = document.getElementById('communication-protocol-ip-container');
-    var wifi_port = document.getElementById('communication-protocol-port-container');
-    var serial = document.getElementById('communication-protocol-serial-container');
-    if(selection == 'serial') {
-        serial.style.display = 'block';
-        wifi_ip.style.display = 'none';
-        wifi_port.style.display = 'none';
-    } else if(selection == 'wifi') {
-        serial.style.display = 'none';
-        wifi_ip.style.display = 'block';
-        wifi_port.style.display = 'block';
-    } else {
-        serial.style.display = 'none';
-        wifi_ip.style.display = 'none';
-        wifi_port.style.display = 'none';
     }
 }
 function removeRobot(e) {
@@ -197,13 +244,13 @@ ws.onclose = function() {
     console.log("Connection closed!");
 }
 ws.onmessage = function(m) {
-    clearConsole();
+    // clearConsole();
     if(typeof m.data === 'string') {
-        console.log(m.data);
+        checkMessage(m.data);
     } else if(m.data instanceof Blob) {
         var reader = new FileReader();
         reader.onload = function() {
-            console.log(reader.result);
+            checkMessage(reader.result);
         }
         reader.readAsText(m.data);
     } else if (m.data instanceof ArrayBuffer) {

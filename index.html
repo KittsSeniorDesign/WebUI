@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <title>MECH</title>
@@ -14,7 +14,7 @@
                         <div id="robot-container">
                             <div id="robot-container-helper">
                                 <div id="robot-container-title" class="unselectable">Robot Container</div>
-                                <button type="button" onclick="showModal()" id="add-robot-button" class="unselectable">+</button>
+                                <button type="button" onclick="addRobot()" id="add-robot-button" class="unselectable">Refresh</button>
                             </div>
                             <div id="robot-item-container"></div>
                         </div>
@@ -29,70 +29,21 @@
                     <td id="page_table_col_21">
                         <div id="settings-container">
                             <div id="settings-container-title" class="unselectable">Settings Container</div>
+                            <button type="button" onclick="requestDT()c" id="add-robot-button" class="unselectable">Refresh</button>
+                            <div id="settings-container-content">
+                                <div id="settings-container-channel-title" class="unselectable">Controllers</div>
+                                <select id="settings-container-channel-selector">
+                                    <option value="none" class="settings-container-channel-option unselectable"></option>
+                                </select>
+                                <div id="settings-container-sink-title" class="unselectable">Robots</div>
+                                <select id="settings-container-sink-selector">
+                                    <option value="none" class="settings-container-sink-option unselectable"></option>
+                                </select>
+                            </div>
                         </div>
                     </td>
                 </tr>
             </table>
-        </div>
-        <div id="modal-div">
-            <div id="modal-content">
-                <div id="modal-content-header">
-                    <span class="close-button unselectable" onclick="hideModal()">&times;</span>
-                    <div id="add-robot-title" class="unselectable">Add New Robot</div>
-                </div>
-                <div id="modal-content-container">
-                    <div id="options-container">
-                        <div id="name-of-robot-selection">
-                            <div id="name-of-robot-selection-title-container">
-                                <div id="name-of-robot-selection-title" class="unselectable">Name of Robot</div>
-                            </div>
-                            <div id="name-of-robot-selection-select-container">
-                                <input type="text" id="name-of-robot-field" placeholder="Robot #">
-                            </div>
-                        </div>
-                        <div id="communication-protocol-selection">
-                            <div id="communication-protocol-selection-title-container">
-                                <div id="communication-protocol-selection-title" class="unselectable">Communication Protocol</div>
-                            </div>
-                            <div id="communication-protocol-selection-select-container">
-                                <select id="communication-protocol-selection-select" class="unselectable" onchange="checkCommOption()">
-                                    <option value="none" class="communication-protocol-option unselectable">  </option>
-                                    <option value="serial" class="communication-protocol-option unselectable">Serial</option>
-                                    <option value="wifi" class="communication-protocol-option unselectable">WiFi</option>
-                                </select>
-                            </div>
-                            <div id="communication-protocol-ip-container">
-                                <input type="number" id="communication-protocol-ip-field-1" class="communication-protocol-ip-field" placeholder="000"/><span>.</span>
-                                <input type="number" id="communication-protocol-ip-field-2" class="communication-protocol-ip-field" placeholder=000>.
-                                <input type="number" id="communication-protocol-ip-field-3" class="communication-protocol-ip-field" placeholder=000>.
-                                <input type="number" id="communication-protocol-ip-field-4" class="communication-protocol-ip-field" placeholder=000>:
-                                <input type="number" id="communication-protocol-port-field" placeholder="65535">
-                            </div>
-                            <div id="communication-protocol-serial-container">
-                                <input type="text" id="communication-protocol-serial-field" placeholder="/dev/null">
-                            </div>
-                        </div>
-                        <div id="type-of-robot-selection">
-                            <div id="type-of-robot-selection-title-container">
-                                <div id="type-of-robot-selection-title" class="unselectable">Type of Robot</div>
-                            </div>
-                            <div id="type-of-robot-selection-select-container">
-                                <select id="type-of-robot-selection-select" class="unselectable">
-                                    <option value="none" class="type-of-robot-option unselectable"> </option>
-                                    <option value="differential" class="type-of-robot-option unselectable">Differential Drive</option>
-                                    <option value="holonomic" class="type-of-robot-option unselectable">Three-Wheeled Holonomic</option>
-                                    <option value="quad" class="type-of-robot-option unselectable">Quadcopter</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="modal-content-footer">
-                    <div id="modal-add-button-helper" onclick="addRobot()">
-                        <div id="modal-add-button" class="unselectable">Add Robot!</div>
-                    </div>
-                </div>
-            </div>
         </div>
     </body>
 </html>

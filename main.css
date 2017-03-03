@@ -1,192 +1,3 @@
-    #modal-div {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    padding-top: 0px;
-    margin:0;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.75);
-    pointer-events:all;
-}
-#modal-content {
-    background-color: rgb(34, 34, 34);
-    z-index: 2;
-    padding:5px;
-    border: 1px solid black;
-    width: 30vw;
-    height: 80vh;
-    margin:0 auto;
-    margin-top:10vh;
-    pointer-events: none;
-}
-#modal-content-header{
-    height:5vh;
-    padding:0;
-    margin:0 auto;
-    margin-bottom:5vh;
-    width:100%;
-    background-color:rgb(34, 34, 34);
-}
-#modal-content-container {
-    height:70vh;
-    width:100%;
-}
-#modal-content-footer {
-    height:5vh;
-    width:100%;
-}
-#modal-add-button-helper {
-    position:absolute;
-    bottom:10vh;
-    left:45vw;
-    height:5vh;
-    padding:0;
-    margin:0 auto;
-    width:10vw;
-    text-align:center;
-    background-color:rgb(24, 24, 24);
-    pointer-events:all;
-}
-#modal-add-button-helper:hover {
-    cursor:pointer;
-    background-color:green !important;
-}
-#modal-add-button {
-    position:relative;
-    margin:0 auto;
-    top:1.25vh;
-}
-#options-container {
-    pointer-events:all;
-}
-#communication-protocol-selection-select-container {
-    width:51px;
-    margin:0 auto;
-}
-#communication-protocol-selection-select {
-    color:rgb(192, 192, 192);
-    border:1px solid rgb(24, 24, 24);
-    background-color:rgb(34, 34, 34);
-    outline:none;
-    text-align:center;
-    margin:0 auto;
-    margin-bottom:2vh;
-}
-#type-of-robot-selection-select {
-    color:rgb(192, 192, 192);
-    border:1px solid rgb(24, 24, 24);
-    background-color:rgb(34, 34, 34);
-    outline:none;
-    text-align:center;
-}
-#type-of-robot-selection-title-container {
-    margin:0 auto;
-    margin-bottom:2vh;
-    width:93px;
-}
-#communication-protocol-selection-title-container {
-    margin:0 auto;
-    margin-bottom:2vh;
-    width:164px;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-}
-#communication-protocol-ip-container {
-    display:none;
-    width:177px;
-    margin:0 auto;
-    margin-bottom:2vh;
-}
-#communication-protocol-port-field {
-    width:36px  ;
-    background-color:rgb(34, 34, 34);
-    color:rgb(192, 192, 192);
-    height:14px;
-    font-size:20;
-    border:1px solid rgb(24, 24, 24);
-    margin:0 auto;
-    outline:none;
-    text-align:center;
-}
-#communication-protocol-port-field:focus::-webkit-input-placeholder {
-    color:rgba(0, 0, 0, 0);
-}
-#communication-protocol-serial-container {
-    display:none;
-    width:100%;
-    margin:0 auto;
-    margin-bottom:2vh;
-}
-#type-of-robot-selection-select-container {
-    width:161px;
-    margin:0 auto;
-}
-.communication-protocol-ip-field {
-    background-color:rgb(34, 34, 34);
-    color:rgb(192, 192, 192);
-    width:22px;
-    height:14px;
-    font-size:20;
-    border:1px solid rgb(24, 24, 24);
-    margin:0 auto;
-    outline:none;
-    display:inline;
-}
-.communication-protocol-ip-field:focus::-webkit-input-placeholder {
-    color:rgba(0, 0, 0, 0);
-}
-#communication-protocol-serial-field {
-    background-color:rgb(34, 34, 34);
-    color:rgb(192, 192, 192);
-    border:1px solid rgb(24, 24, 24);
-    position:relative;
-    left:10vw;
-    width:10vw;
-    text-align:center;
-    overflow:auto;
-    height:14px;
-    font-size:20;
-    margin:0 auto;
-    outline:none;
-}
-#communication-protocol-serial-field:focus::-webkit-input-placeholder {
-    color:rgba(0, 0, 0, 0);
-}
-#add-robot-title {
-    height:5vh;
-    margin:0 auto;
-    text-align:center;
-    font-size:24px;
-    width:158px;
-}
-#add-robot-settings-container {
-    height:73vh;
-    width:100%;
-}
-.close-button {
-    color:rgb(192, 192, 192);
-    float: right;
-    margin-top:0px;
-    padding:0;
-    position:relative;
-    top:-5px;
-    right:5px;
-    height:10px;
-    font-size: 30px;
-    pointer-events:all;
-}
-.close-button:hover,
-.close-button:focus {
-    color: red;
-    text-decoration: none;
-    cursor: pointer;
-}
 .page-table {
     width:100%;
     height:100%;
@@ -225,6 +36,7 @@ input::-webkit-inner-spin-button {
 #title-div {
     margin: 0px auto;
     height: 7vh;
+    min-height: 7vh;
     text-align: center;
     font-size: 30px;
 }
@@ -263,7 +75,7 @@ input::-webkit-inner-spin-button {
 }
 #add-robot-button {
     height: 18px;
-    width: 18px;
+    width: 55px;
     text-align: center;
     vertical-align: middle;
     padding: 0px;
@@ -312,6 +124,12 @@ input::-webkit-inner-spin-button {
 }
 .unselectable {
     -webkit-user-select:none;
+}
+.status-disconnected {
+    color:red !important;
+}
+.status-connected {
+    color:green !important;
 }
 .robot-item-div {
     width:90%;
