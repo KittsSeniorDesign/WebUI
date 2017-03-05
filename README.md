@@ -1,7 +1,6 @@
 ## Description
 
 This Web-UI serves as the front-end of the MECH Senior Design Project.
-
 It is developed for Google Chrome Version 56.0.2924.87 and later. 
 
 ## Instructions
