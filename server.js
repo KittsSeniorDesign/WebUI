@@ -1,6 +1,13 @@
 chalk = require('chalk');
 ws = require('ws');
 net = require('net');
+log = require('./logger.js');
+
+const info = 'info';
+const debug = 'debug';
+const warning = 'warning';
+
+log('Server started', info);
 
 error = chalk.bold.red;
 packet = chalk.magenta;
@@ -28,21 +35,26 @@ wss.on('connection', (ws) => {
     });
     ws.on('close', () => {
         console.log(`${w('Websocket client')} has ${disconnect('disconnected')}.`);
+        log('Websocket client has disconnected', info);
         websocketClient = undefined;
     })
     ws.on('error', (e) => {
         console.log(`An ${error('error')} has occured: ${error(e.message)}`);
+        log(e.message);
         websocketClient = undefined;
     });
     console.log(`${w('Websocket client')} has ${connect('connected')}.`);
+    log('Websocket client has connected', info);
     websocketClient = ws;
 })
     
 const nss = net.createServer((c) => {
     tcpClient = c;
     console.log(`${tcp('TCP client')} has ${connect('connected')}.`);
+    log('TCP client has connected', info);
     c.on('end', () => {
         console.log(`${tcp('TCP client')} has ${disconnect('disconnected')}.`);
+        log('TCP client has disconnected', info);
     });
     c.on('data', (m) => {
             console.log(`Received on ${tcp('TCP')}: ${packet(m)}`);
@@ -56,10 +68,19 @@ const nss = net.createServer((c) => {
         }
     });
     c.on('error', (e) => {
-        console.log(`An ${error('error')} has occured: ${error(e.message)}`); 
+        console.log(`An ${error('error')} has occured: ${error(e.message)}`);
+        log(e.message);
     });
 });
 
 nss.listen(tcpPort, () => {
     console.log(`${tcp('TCP server')} listening on port ${tcp(tcpPort)}.`);
+});
+
+process.on('SIGINT', () => {
+    process.stdout.write("\033[2K\033[200D");
+    console.log('Shutting down server.');
+    log('Server shut down', info, () => {
+        process.exit(); 
+    });
 });
