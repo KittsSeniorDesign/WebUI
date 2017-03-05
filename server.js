@@ -79,7 +79,10 @@ nss.listen(tcpPort, () => {
 
 process.on('SIGINT', () => {
     process.stdout.write("\033[2K\033[200D");
-    console.log('Shutting down server.');
+    if(process.platform === 'win32')
+        process.stdout.write('Shutting down server.');
+    else if(process.platform === 'darwin')
+        console.log('Shutting down server.');
     log('Server shut down', info, () => {
         process.exit(); 
     });
