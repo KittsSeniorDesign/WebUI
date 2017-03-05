@@ -9,7 +9,7 @@ var log = function(message, level, callback) {
     else if(process.platform === 'win32') {
         path = __dirname + '\\server.log';
         time = Date().split(' ').slice(0,-4).join(' ');
-        line_ending = '\n';
+        line_ending = '\r\n';
     }
     var l = 'Error';
     switch(level) {
