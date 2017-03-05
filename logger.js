@@ -1,12 +1,17 @@
 const fs = require('fs');
 
-if(process.platform === 'darwin')
+if(process.platform === 'darwin') {
     path = __dirname + '/server.log';
-else if(process.platform === 'win32')
+    time = Date().split(' ').slice(0,-2).join(' ');
+    line_ending = '\n';
+}
+else if(process.platform === 'win32') {
     path = __dirname + '\\server.log';
+    time = Date().split(' ').slice(0,-4).join(' ');
+    line_ending = '\n';
+}
 
 var log = function(message, level, callback) {
-    var time = Date().split(' ').slice(0,-2).join(' ');
     var l = 'Error';
     switch(level) {
         case 'error':
@@ -22,7 +27,7 @@ var log = function(message, level, callback) {
             l = 'INFO';
             break;
     }
-    var log_message = `${time} - ${l}: ${message}.\n`;
+    var log_message = `${time} - ${l}: ${message}.${line_ending}`;
     var buffer = new Buffer(log_message);
     fs.open(path, 'a', function(error, fd) {
         if (error) {
