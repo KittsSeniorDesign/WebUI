@@ -1,17 +1,16 @@
 const fs = require('fs');
 
-if(process.platform === 'darwin') {
-    path = __dirname + '/server.log';
-    time = Date().split(' ').slice(0,-2).join(' ');
-    line_ending = '\n';
-}
-else if(process.platform === 'win32') {
-    path = __dirname + '\\server.log';
-    time = Date().split(' ').slice(0,-4).join(' ');
-    line_ending = '\n';
-}
-
 var log = function(message, level, callback) {
+    if(process.platform === 'darwin') {
+        path = __dirname + '/server.log';
+        time = Date().split(' ').slice(0,-2).join(' ');
+        line_ending = '\n';
+    }
+    else if(process.platform === 'win32') {
+        path = __dirname + '\\server.log';
+        time = Date().split(' ').slice(0,-4).join(' ');
+        line_ending = '\n';
+    }
     var l = 'Error';
     switch(level) {
         case 'error':
