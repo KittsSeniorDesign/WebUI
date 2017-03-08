@@ -19,10 +19,10 @@ It is developed for Google Chrome Version 56.0.2924.87 and later.
 - [x] Bidirectional dataflow.
 - [x] Numerically display information received.
 - [ ] Graphically display information received from TCP connection (robot location).
-- [ ] Graphically relay waypoint information.
 - [ ] Graphically select robots.
 - [ ] Map channels and sinks.
 - [ ] Change individual robot settings.
 
 ### Desired
+- [ ] Graphically relay waypoint information.
 - [ ] Live video feed
