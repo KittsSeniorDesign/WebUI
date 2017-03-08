@@ -10,16 +10,18 @@ It is developed for Google Chrome Version 56.0.2924.87 and later.
 3. Navigate to the `server` directory.
 4. Install Node.js dependencies by running the command `npm install` in the `server` directory.
 5. Start the server on the command line by running the command `node server.js`.
-6. Connect the website by opening `index.html` in Google Chrome.
-7. You are now free to connect to the TCP server and start communicating with the Web-UI.
+6. Connect the website by opening `index.html` in Google Chrome from the `website` directory.
+7. You are now free to connect to the TCP server and start sending and receiving data with the Web-UI.
 
 ## Functionality
 
 ### Required
-- [x] Data-flow from Website with Websockets to TCP connection.
-- [x] Numerically display information received from TCP connection.
+- [x] Bidirectional dataflow.
+- [x] Numerically display information received.
 - [ ] Graphically display information received from TCP connection (robot location).
-- [ ] Change system settings.
+- [ ] Graphically relay waypoint information.
+- [ ] Graphically select robots.
+- [ ] Map channels and sinks.
 - [ ] Change individual robot settings.
 
 ### Desired
