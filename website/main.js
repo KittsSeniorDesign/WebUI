@@ -132,6 +132,8 @@ function checkMessage(m) {
         var robot_vars = m.split(',');
         robot_vars[0] = robot_id;
         updateRobot(robot_vars);
+    } else {
+        console.log(m);
     }
 }
 function addRobot(r) {
