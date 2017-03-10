@@ -1,5 +1,5 @@
 {
-  "name": "MECH",
+  "name": "mech_server",
   "version": "1.0.0",
   "description": "Senior Design Project",
   "main": "server.js",
@@ -20,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/KittsSeniorDesign/WebUI/issues"
   },
-  "homepage": "https://github.com/KittsSeniorDesign/WebUI#readme"
+  "homepage": "https://github.com/KittsSeniorDesign/WebUI#readme",
+  "devDependencies": {}
 }
