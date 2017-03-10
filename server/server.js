@@ -7,14 +7,14 @@ const info = 'info';
 const debug = 'debug';
 const warning = 'warning';
 
-logger.log('Server started', info);
+logger.log.info('Server started');
 
-error = chalk.bold.red;
-packet = chalk.cyan;
-connect = chalk.green;
-disconnect = chalk.red;
-w = chalk.yellow;
-tcp = chalk.magenta;
+color_error = chalk.bold.red;
+color_packet = chalk.cyan;
+color_connect = chalk.green;
+color_disconnect = chalk.red;
+color_websocket = chalk.yellow;
+color_tcp = chalk.magenta;
 
 websocketClient = undefined;
 wsPort = 9002;
@@ -29,60 +29,60 @@ const wss = new ws.Server({
 
 wss.on('connection', (ws) => {
   ws.on('message', (m) => {
-    console.log(`Received on ${w('Websocket')}: ${packet(m)}`);
+    console.log(`Received on ${color_websocket('Websocket')}: ${color_packet(m)}`);
     if(tcpClient) {
       tcpClient.write(m);
-      console.log(`Sent on ${tcp('TCP')}: ${packet(m)}`);
+      console.log(`Sent on ${color_tcp('TCP')}: ${color_packet(m)}`);
     }
   });
   ws.on('close', () => {
-    console.log(`${w('Websocket client')} has ${disconnect('disconnected')}.`);
-    logger.log('Websocket client has disconnected', info);
+    console.log(`${color_websocket('Websocket client')} has ${color_disconnect('disconnected')}.`);
+    logger.log.info('Websocket client has disconnected');
     websocketClient = undefined;
   })
   ws.on('error', (e) => {
-    console.log(`An ${error('error')} has occured: ${error(e.message)}`);
-    logger.log(e.message);
+    console.log(`An ${color_error('error')} has occured: ${color_error(e.message)}`);
+    logger.log.error(e.message);
     websocketClient = undefined;
   });
-  console.log(`${w('Websocket client')} has ${connect('connected')}.`);
-  logger.log('Websocket client has connected', info);
+  console.log(`${color_websocket('Websocket client')} has ${color_connect('connected')}.`);
+  logger.log.info('Websocket client has connected');
   websocketClient = ws;
 })
     
 const nss = net.createServer((c) => {
   tcpClient = c;
-  console.log(`${tcp('TCP client')} has ${connect('connected')}.`);
-  logger.log('TCP client has connected', info);
+  console.log(`${color_tcp('TCP client')} has ${color_connect('connected')}.`);
+  logger.log.info('TCP client has connected')
   c.on('end', () => {
-    console.log(`${tcp('TCP client')} has ${disconnect('disconnected')}.`);
-    logger.log('TCP client has disconnected', info);
+    console.log(`${color_tcp('TCP client')} has ${color_disconnect('disconnected')}.`);
+    logger.log.info('TCP client has disconnected');
     tcpClient = undefined;
   });
   c.on('data', (m) => {
-      console.log(`Received on ${tcp('TCP')}: ${packet(m)}`);
+      console.log(`Received on ${color_tcp('TCP')}: ${color_packet(m)}`);
     if(websocketClient) {
       if (websocketClient.readyState === 1) {
         websocketClient.send(m);
-        console.log(`Sent on ${w('Websocket')}: ${packet(m)}`);
+        console.log(`Sent on ${color_websocket('Websocket')}: ${color_packet(m)}`);
       }
     }
   });
   c.on('error', (e) => {
-    console.log(`An ${error('error')} has occured: ${error(e.message)}`);
-    logger.log(e.message);
+    console.log(`An ${color_error('error')} has occured: ${color_error(e.message)}`);
+    logger.log.error(e.message);
     tcpClient = undefined;
   });
 });
 
 nss.listen(tcpPort, () => {
-  console.log(`${tcp('TCP server')} listening on port ${tcp(tcpPort)}.`);
+  console.log(`${color_tcp('TCP server')} listening on port ${color_tcp(tcpPort)}.`);
 });
 
 process.on('SIGINT', () => { process.exit() });
 
 process.on('exit', () => {
   process.stdout.write("\033[2K\033[200D");
-  logger.logSync('Server shut down', info);
+  logger.logSync.info('Server shut down');
   console.log('Shutting down server.');
 });

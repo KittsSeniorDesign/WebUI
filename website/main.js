@@ -54,7 +54,7 @@ function createRobot(vars) {
       case 1:
         current_field.innerHTML = 'Type';       val_id = 'type';       break;
       case 2:
-        current_field.innerHTML = 'Battery';    val_id = 'battery';    break; // ?
+        current_field.innerHTML = 'Battery';    val_id = 'battery';    break;
       case 3:
         current_field.innerHTML = 'Position X'; val_id = 'position_x'; break;
       case 4:
@@ -62,7 +62,7 @@ function createRobot(vars) {
       case 5:
         current_field.innerHTML = 'Position Z'; val_id = 'position_z'; break;
       case 6:
-        current_field.innerHTML = 'Velocity';   val_id = 'velocity';   break; // Assign to someone to calculate
+        current_field.innerHTML = 'Velocity';   val_id = 'velocity';   break;
       case 7:
         current_field.innerHTML = 'Heading';    val_id = 'heading';    break;
       case 8:
@@ -129,7 +129,7 @@ function checkMessage(m) {
     setDT(m);
   } else if(m.includes('robot_')) {
     var robot_id = m.split(',')[0].slice(6);
-    var robot_vars = m.split(',');
+    var robot_vars = m.split(';')[0].split(',');
     robot_vars[0] = robot_id;
     updateRobot(robot_vars);
   } else {
@@ -216,9 +216,9 @@ ws.onmessage = function(m) {
 function clearConsole() {
   console.API;
   if (typeof console._commandLineAPI !== 'undefined') {
-    console.API = console._commandLineAPI; //chrome
+    console.API = console._commandLineAPI;
   } else if (typeof console._inspectorCommandLineAPI !== 'undefined') {
-    console.API = console._inspectorCommandLineAPI; //Safari
+    console.API = console._inspectorCommandLineAPI;
   } else if (typeof console.clear !== 'undefined') {
     console.API = console;
   }
