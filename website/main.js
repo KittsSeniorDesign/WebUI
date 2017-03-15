@@ -91,7 +91,7 @@ function createRobot(vars) {
       case 1:
         current_field.innerHTML = 'Type';       val_id = 'type';       break;
       case 2:
-        current_field.innerHTML = 'Battery';    val_id = 'battery';    break;
+        current_field.innerHTML = 'Color';      val_id = 'color';      break;
       case 3:
         current_field.innerHTML = 'Position X'; val_id = 'position_x'; break;
       case 4:
@@ -114,6 +114,8 @@ function createRobot(vars) {
     if(val_id === 'status') {
       current_value.classList.add('status-connected');
       current_value.innerHTML = 'Connected';
+    } else if(val_id === 'color') {
+      current_value.style.backgroundColor = fill_color;
     } else {
       current_value.innerHTML = vars[i];
     }
@@ -152,6 +154,8 @@ function updateRobot(vars) {
           } else if(current_robot_list[i].fields[j].innerHTML === 'Position Y') {
             current_robot_list[i].y = vars[j];
             current_robot_list[i].values[j].innerHTML = vars[j];
+          } else if(current_robot_list[i].fields[j].innerHTML === 'Color') {
+            
           } else {
              current_robot_list[i].values[j].innerHTML = vars[j];
           }
