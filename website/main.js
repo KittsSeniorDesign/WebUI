@@ -7,8 +7,6 @@ var current_robot_list = [];
 var data_timeout = 10000;
 var removal_timeout = 100000000000;
 
-var data_timeout_event = new Event('dataTimeout');
-
 function requestDT() {
   if(ws.readyState == 1) {
     ws.send('requestDTconfig()');
@@ -34,18 +32,57 @@ function resetValues(r) {
       value.innerHTML = '0';
   });
 }
+function drawRobots() {
+  var bound_x = 3874;
+  var bound_y = 2775;
+  var canvas = document.getElementById('canvas');
+  var canvas_container = document.getElementById('canvas-container');
+  var width = canvas_container.offsetWidth;
+  canvas.width = width;
+  var height = canvas_container.offsetHeight - 10; // weird
+  canvas.height = height;
+  var context = canvas.getContext('2d');
+  context.clearRect(0, 0, width, height);
+  current_robot_list.forEach((robot) => {
+    context.beginPath();
+    var current_x = Math.round((robot.x / bound_x) * width);
+    var current_y = Math.floor(height - ((robot.y / bound_y) * height));
+    context.lineWidth = 3;
+    context.arc(current_x, current_y, robot.radius, 0, 2 * Math.PI);
+    context.strokeStyle = robot.color_stroke;
+    context.fillStyle = robot.color_fill;
+    context.fill();
+    context.stroke();
+  });
+}
+function generateRandom(low,high) {
+    return Math.random() * (high - low) + low;
+}
 function createRobot(vars) {
+  var r_f = Math.round(generateRandom(0,255));
+  var g_f = Math.round(generateRandom(0,255));
+  var b_f = Math.round(generateRandom(0,255));
+  var r_s = Math.round(generateRandom(0,255));
+  var g_s = Math.round(generateRandom(0,255));
+  var b_s = Math.round(generateRandom(0,255));
+  var fill_color = `rgb(${r_f}, ${g_f}, ${b_f})`;
+  var stroke_color = `rgb(${r_s}, ${g_s}, ${b_s})`;
   var robot = {
     fields: [],
     values: [],
     robotNumber: 0,
     timeRemainingDisconnect: 0,
-    timeRemainingRemoval: 0
+    timeRemainingRemoval: 0,
+    x: 0,
+    y: 0,
+    radius: 15,
+    color_fill: fill_color,
+    color_stroke: 'white'
   };
   for(var i = 0; i < number_of_fields; i++) {
     var current_field = document.createElement('div');
     current_field.classList.add('display-field');
-    current_field.classList.add('robot-item-' + vars[0]);
+    current_field.classList.add('robot_item-' + vars[0]);
     current_field.classList.add('unselectable');
     var val_id;
     switch(i) {
@@ -72,7 +109,7 @@ function createRobot(vars) {
     }
     var current_value = document.createElement('div');
     current_value.classList.add('display-value');
-    current_value.classList.add('robot-item-' + vars[0]);
+    current_value.classList.add('robot_item-' + vars[0]);
     current_value.classList.add('unselectable');
     if(val_id === 'status') {
       current_value.classList.add('status-connected');
@@ -109,6 +146,12 @@ function updateRobot(vars) {
             current_robot_list[i].values[j].innerHTML= 'Connected';
             current_robot_list[i].values[j].classList.remove('status-disconnected');
             current_robot_list[i].values[j].classList.add('status-connected');
+          } else if(current_robot_list[i].fields[j].innerHTML === 'Position X') {
+            current_robot_list[i].x = vars[j];
+            current_robot_list[i].values[j].innerHTML = vars[j];
+          } else if(current_robot_list[i].fields[j].innerHTML === 'Position Y') {
+            current_robot_list[i].y = vars[j];
+            current_robot_list[i].values[j].innerHTML = vars[j];
           } else {
              current_robot_list[i].values[j].innerHTML = vars[j];
           }
@@ -116,6 +159,7 @@ function updateRobot(vars) {
         timer(current_robot_list[i]);
       }
     }
+    drawRobots();
     if(add_robot_flag) {
       addRobot(createRobot(vars));
     }
@@ -146,17 +190,17 @@ function addRobot(r) {
   rc.classList.add('robot-item-' + r.robotNumber);
   rc.addEventListener('mousedown', displaySettings);
   var cap = document.createElement('div');
-  cap.id = 'cap_' + r.robotNumber
+  cap.id = 'cap-' + r.robotNumber
   cap.classList.add('robot-item-caption');
   cap.classList.add('robot-item-' + r.robotNumber);
   cap.classList.add('unselectable');
   cap.innerHTML = 'Robot ' + r.values[0].innerHTML;
   var field_flex_container = document.createElement('div');
-  field_flex_container.id = 'robot_item_field_flex_container_' + r.robotNumber;
+  field_flex_container.id = 'robot_item_field_flex_container-' + r.robotNumber;
   field_flex_container.classList.add('field-flex-container');
   field_flex_container.classList.add('robot-item-' + r.robotNumber);
   var value_flex_container = document.createElement('div');
-  value_flex_container.id = 'robot_item_value_flex_container_' + r.robotNumber;
+  value_flex_container.id = 'robot_item_value_flex_container-' + r.robotNumber;
   value_flex_container.classList.add('value-flex-container');
   value_flex_container.classList.add('robot-item-' + r.robotNumber);
   rc.appendChild(cap);
@@ -180,6 +224,17 @@ function removeRobot(r) {
   r.fields[0].parentElement.parentElement.parentElement.removeChild(document.getElementById('rc-' + r.robotNumber));
 }
 function displaySettings() {
+  current_robot_list.forEach((robot) => {
+    if(robot.robotNumber == this.id.slice(this.id.indexOf('-')+1)) {
+      if(robot.color_stroke != 'red') {
+        resetAllStrokes();
+        robot.color_stroke ='red';
+      } else {
+        robot.color_stroke = 'white';
+      }
+      drawRobots();
+    }
+  });
   if(this.style.backgroundColor != 'rgb(24, 24, 24)') {
     resetAllBackgrounds();
     this.style.backgroundColor = 'rgb(24, 24, 24)';
@@ -192,7 +247,13 @@ function resetAllBackgrounds() {
      robot_item.style.backgroundColor = 'rgb(34, 34, 34)'; 
   });
 }
+function resetAllStrokes() {
+  current_robot_list.forEach((robot) => {
+    robot.color_stroke = 'white';
+  });
+}
 ws = new WebSocket("ws://127.0.0.1:9002/");
+// ws.binaryType = 'arraybuffer'
 ws.onopen = function() {
   console.log("Connection established!");
 }

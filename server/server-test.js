@@ -28,10 +28,10 @@ function generateRandom(low,high) {
 }
 
 var t = timers.setInterval(() => {
-    var val_0 = Math.round(generateRandom(0,1));;
+    var val_0 = Math.round(generateRandom(0,4));;
     var val_1 = Math.round(generateRandom(0,100));
-    var val_2 = Math.round(generateRandom(0,100));
-    var val_3 = Math.round(generateRandom(0,100));
+    var val_2 = Math.round(generateRandom(0,500));
+    var val_3 = Math.round(generateRandom(0,500));
     var val_4 = Math.round(generateRandom(0,100));
     var val_5 = Math.round(generateRandom(0,100));
     var val_6 = Math.round(generateRandom(0,100));
@@ -42,4 +42,4 @@ var t = timers.setInterval(() => {
         console.error(`An error has occured: ${e.message}`);
         process.exit(1);
     }
-}, 10);
+}, 100);
