@@ -19,7 +19,7 @@ It is developed for Google Chrome Version 56.0.2924.87 and later.
 - [x] Bidirectional dataflow.
 - [x] Numerically display information received.
 - [x] Graphically display robot location.
-- [ ] Graphically select robots.
+- [x] Graphically select robots.
 - [ ] Map channels and sinks.
 - [ ] Change individual robot settings.
 
