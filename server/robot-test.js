@@ -47,7 +47,7 @@ var t = timers.setInterval(() => {
         console.error(`An error has occured: ${e.message}`);
         process.exit(1);
     }
-}, 50);
+}, 10);
 
 var j = 0;
 var l = 750
@@ -69,4 +69,26 @@ var t = timers.setInterval(() => {
         console.error(`An error has occured: ${e.message}`);
         process.exit(1);
     }
-}, 50);
+}, 10);
+
+var m = 0;
+var n = 1250;
+var t = timers.setInterval(() => {
+    if(m > 3874) {
+        m = 0;
+    }
+    var val_0 = Math.round(generateRandom(2,2));
+    var val_1 = Math.round(generateRandom(0,0));
+    var val_2 = Math.round(generateRandom(0,0));
+    var val_3 = m++;
+    var val_4 = n;
+    var val_5 = Math.round(generateRandom(0,0));
+    var val_6 = Math.round(generateRandom(0,0));
+    var val_7 = Math.round(generateRandom(180,180));
+    try {
+        tcpClient.write('robot_' + val_0 + ',' + val_1 + ',' + val_2 + ',' + val_3 + ',' + val_4 + ',' + val_5 + ',' + val_6 + ',' + val_7 + ';');
+    } catch(e) {
+        console.error(`An error has occured: ${e.message}`);
+        process.exit(1);
+    }
+}, 10);
