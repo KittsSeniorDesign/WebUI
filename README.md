@@ -10,8 +10,8 @@ It is developed for Google Chrome Version 56.0.2924.87 and later.
 3. Navigate to the `server` directory.
 4. Install Node.js dependencies by running the command `npm install` in the `server` directory.
 5. Start the server on the command line by running the command `node server.js`.
-6. Connect the website by opening `index.html` in Google Chrome from the `website` directory.
-7. You are now free to connect to the TCP server and start sending and receiving data with the Web-UI.
+6. Open the [website](https://kittsseniordesign.github.io/WebUI/ui/).
+7. You are now free to connect to the TCP server and start sending and receiving data.
 
 ## Functionality
 

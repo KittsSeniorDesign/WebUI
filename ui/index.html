@@ -11,36 +11,58 @@
         <tr id="page_table_row_1">
           <td id="page_table_col_11" rowspan="2">
             <div id="robot-container">
-              <!-- <div id="robot-container-helper"> -->
-                <div id="robot-container-title" class="unselectable">Robot Container</div>
-                <button type="button" onclick="addRobot()" id="add-robot-button" class="unselectable">Refresh</button>
-              <!-- </div> -->
+                <div id="robot-container-title" class="generic-title-with-button unselectable">Robots
+                <button type="button" onclick="addRobot()" id="add-robot-button" class="generic-button unselectable">Refresh</button>
+                </div>
               <div id="robot-item-container"></div>
             </div>
           </td>
           <td id="page_table_col_12">
             <div id="graphics-container">
-              <div id="graphics-container-title" class="unselectable">Graphics Container</div>
+              <div id="graphics-container-title" class="generic-title unselectable">Graphics</div>
               <div id="canvas-container">
-                <canvas id="canvas"> </canvas>
+                <canvas id="canvas" class="unselectable"> </canvas>
               </div>
             </div>
           </td>
         </tr>
         <tr id="page_table_row_2">
           <td id="page_table_col_21">
+            <div id="configuration-container">
+              <div id="configuration-container-title" class="generic-title unselectable">Configuration</div>
+              <div class="dropdown unselectable">
+                <button id="configuration-button" onclick="toggleDropdown('configuration-dropdown')" class="dropbtn unselectable">Configuration</button>
+                <div id="configuration-dropdown" class="dropdown-content unselectable">
+                  <div onclick="setDropdown('configuration-button','Single')">Single</div>
+                  <div onclick="setDropdown('configuration-button','Cluster')">Cluster</div>
+                  <div onclick="setDropdown('configuration-button','Follow the Leader')">Follow the Leader</div>
+                </div>
+              </div>
+                
+            </div>
+            <div id="waypoint-container">
+              <div id="waypoint-container-title" class="generic-title unselectable">Waypoints
+                <button type="button" onclick="sendWaypoints()" id="waypoints-button" class="generic-button unselectable">Send</button>
+              </div>
+              <div id="coordinates-list" class="flx">
+              </div>
+            </div>
             <div id="settings-container">
-              <div id="settings-container-title" class="unselectable">Settings Container</div>
-              <button type="button" onclick="requestDT()" id="add-robot-button" class="unselectable">Refresh</button>
-              <div id="settings-container-content">
-                <div id="settings-container-channel-title" class="unselectable">Controllers</div>
-                <select id="settings-container-channel-selector" class="dropdown">
-                  <option value="none" class="dropdown unselectable"></option>
-                </select>
-                <div id="settings-container-sink-title" class="unselectable">Robots</div>
-                <select id="settings-container-sink-selector" class="dropdown">
-                  <option value="none" class="dropdown unselectable"></option>
-                </select>
+              <div id="settings-container-title" class="generic-title-with-button unselectable">Controllers
+                <button type="button" onclick="requestDT()" id="request-dt-button" class="generic-button unselectable">Refresh</button>
+              </div>
+              <div id="settings-container-content" class="unselectable">
+                <div class="dropdown unselectable">
+                  <button id="controllers-button" onclick="toggleDropdown('controllers-dropdown')" class="dropbtn unselectable">Controllers</button>
+                  <div id="controllers-dropdown" class="dropdown-content unselectable">
+                    <div onclick="setDropdown('controllers-button','Waypoints')">Waypoints</div>
+                  </div>
+                </div>
+                <div class="dropdown unselectable">
+                  <button onclick="toggleDropdown('robots-dropdown')" class="dropbtn unselectable">Robots</button>
+                  <div id="robots-dropdown" class="dropdown-content unselectable">
+                  </div>
+                </div>
               </div>
             </div>
           </td>

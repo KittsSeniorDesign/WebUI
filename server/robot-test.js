@@ -49,7 +49,7 @@ var t = timers.setInterval(() => {
     }
 }, 10);
 
-var j = 0;
+var j = 1000;
 var l = 750
 var t = timers.setInterval(() => {
     if(j > 3874) {
@@ -62,7 +62,7 @@ var t = timers.setInterval(() => {
     var val_4 = l;
     var val_5 = Math.round(generateRandom(0,0));
     var val_6 = Math.round(generateRandom(0,0));
-    var val_7 = Math.round(generateRandom(0,360));
+    var val_7 = Math.round(generateRandom(90,90));
     try {
         tcpClient.write('robot_' + val_0 + ',' + val_1 + ',' + val_2 + ',' + val_3 + ',' + val_4 + ',' + val_5 + ',' + val_6 + ',' + val_7 + ';');
     } catch(e) {

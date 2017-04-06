@@ -1,6 +1,83 @@
+.dropbtn {
+    background-color: #222222;
+    color: #c9c9c9;
+    padding: 10px;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    color:#c0c0c0;
+    min-width:150px;
+    display: none;
+    position: absolute;
+    background-color: #333333;
+    z-index: 1;
+}
+#configuration-button{
+    display:none;
+}
+.dropdown-content div {
+    font-size:14px;
+    color: #c0c0c0;
+    padding: 10px 10px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content div:hover {
+    background-color: #111111;
+}
+
+.show {
+    display:block;
+}
+.flx {
+  display:flex;
+  width:100%;
+  overflow:auto;
+  height:210px;
+  flex-direction:column;
+  flex-wrap:nowrap;
+  justify-content:flex-start;
+  margin:0;
+  padding:5px;
+}
+.generic-button {
+    background-color:#222222;
+    color:#C0C0C0;
+    float:right;
+    position:relative;
+    left:-10px;
+    border:none;
+    outline:none;
+    cursor:pointer;
+}
+#waypoints-button {
+    display:none;
+}
+.generic-button:hover {
+    color:#00FF00;
+}
+.coordinates {
+  color:white;
+  min-height:20px;
+  width:95%;
+  display:flex;
+  overflow:auto;
+  margin:4px;
+  margin-bottom:-1px;
+  padding:5px;
+  background-color:#333333;
+}
 .page-table {
     width:100%;
-    height:100%;
+    height:100 %;
     margin:0 auto;
     border-collapse: separate;
     border-spacing: 10px;
@@ -29,6 +106,8 @@
 #canvas-container {
     height:95%;
     width:100%;
+    border:0px solid black;
+    min-width:635px;
 }
 .value-flex-container {
     display:flex;
@@ -47,48 +126,24 @@
 #robot-container-helper {
     height: 18px;
 }
-#robot-container-title {
-    padding:5px;
-    width: 100%;
-    text-align: center;
-    height: 18px;
-}
-#add-robot-button {
-    height: 18px;
-    width: 55px;
-    text-align: center;
-    vertical-align: middle;
-    padding: 0px;
-    border: none;
-    outline: none;
-    background-color: rgba(34, 34, 34, 0);
-    color:rgb(192, 192, 192);
-    float: right;
-    z-index: 1;
-    position: relative;
-    top: -23px;
-    right:5px;
-    cursor: pointer;
-}
-#add-robot-button:hover {
-    color:green;
-}
+
 #robot-item-container {
     width: 100%;
     min-width:200px;
     height: 657px;
-    background-color: rgb(34, 34, 34);
+    background-color: #222222;
 }
-#graphics-container-title {
+.generic-title {
     padding:5px;
     width: 100%;
-    text-align: center;
-    height: 3%;
+    text-align:center;
+    height: 18px;
 }
-#settings-container-title {
+.generic-title-with-button {
     padding:5px;
     width: 100%;
-    text-align: center;
+    text-align:center;
+    text-indent:50px;
     height: 18px;
 }
 #robot-item-container {
@@ -103,22 +158,22 @@
     color:red !important;
 }
 .status-connected {
-    color:green !important;
+    color:#00FF00 !important;
 }
 .robot-item-div {
     width:90%;
     margin:0 auto;
-    border:1px solid rgb(24, 24, 24);
+    border:1px solid #111111;
     outline:none;
     margin-top:10px;
     min-width:175px
 }
 .dropdown {
     margin:0 auto;
-    background-color:rgb(34, 34, 34);
+    background-color:#222222;
     color:rgb(192, 192, 192);
     outline:none;
-    border:1px solid rgb(24, 24, 24);
+    border:1px solid #111111;
 }
 .robot-item-caption {
     height:18px;
@@ -139,7 +194,7 @@
     border:none;
     /*border-bottom:1px solid black;*/
     outline:none;
-    background-color:rgb(34, 34, 34);
+    background-color:#222222;
     float:right;
     color:rgb(192, 192, 192);
     z-index:1;
@@ -154,22 +209,22 @@
     width:100%;
 }
 #page_table_col_11 {
-    width:256px;
+    width:15.23vw;
     height:100%;
-    border:1px solid rgb(24, 24, 24);
-    background-color:rgb(24, 24, 24);
+    border:1px solid #111111;
+    background-color:#111111;
 }
 #page_table_col_12 {
     /*width:75%;*/
     height:70%;
-    border:1px solid rgb(24, 24, 24);
-    background-color:rgb(24, 24, 24);
+    border:1px solid #111111;
+    background-color:#111111;
 }
 #page_table_col_21 {
     width:75%;
     height:30%;
-    border:1px solid rgb(24, 24, 24);
-    background-color:rgb(24, 24, 24);
+    border:1px solid #111111;
+    background-color:#111111;
 }
 #heading {
     width:708px;
@@ -182,20 +237,43 @@
 #robot-container {
     width:100%;
     height:100%;
-    background-color:rgb(34, 34, 34);
+    background-color:#222222;
+}
+#configuration-container {
+    float:left;
+    width:32%;
+    height:100%;
+    background-color:#222222;
+}
+#waypoint-container {
+    float:right;
+    width:32%;
+    height:100%;
+    background-color:#222222;
+    margin-left:10px;
 }
 #settings-container {
-    width:100%;
+    margin:0 auto;
+    width:32%;
     height:100%;
-    background-color:rgb(34, 34, 34);
+    background-color:#222222;
 }
 #graphics-container {
     width:100%;
     height:100%;
-    background-color:rgb(34, 34, 34);
+    background-color:#222222;
 }
 body {
+    /*height: 100%;*/
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    overflow: auto;
     height:98vh;
-    background-color:rgb(24, 24, 24);
+    background-color:#111111;
     color:rgb(192, 192, 192);
+}
+html {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
 }
