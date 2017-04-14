@@ -35,10 +35,15 @@
                 <div id="configuration-dropdown" class="dropdown-content unselectable">
                   <div onclick="setDropdown('configuration-button','Single')">Single</div>
                   <div onclick="setDropdown('configuration-button','Cluster')">Cluster</div>
-                  <div onclick="setDropdown('configuration-button','Follow the Leader')">Follow the Leader</div>
                 </div>
               </div>
-                
+              <div class="dropdown unselectable">
+              <button id="configuration-suboption-button" onclick="toggleDropdown('configuration-suboption-dropdown')" class="dropbtn unselectable">Sub-Configuration</button>
+              <div id="configuration-suboption-dropdown" class="dropdown-content unselectable">
+                <div onclick="setDropdown('configuration-suboption-button','Follow the Leader')">Follow the Leader</div>
+                <div onclick="setDropdown('configuration-suboption-button','Shape')">Shape</div>
+              </div>
+              </div>
             </div>
             <div id="waypoint-container">
               <div id="waypoint-container-title" class="generic-title unselectable">Waypoints

@@ -161,6 +161,8 @@ function connectSelected() {
   var width = canvas.width;
   var height = canvas.height;
   context.setLineDash([5]);
+  var mid_x = 0;
+  var mid_y = 0;
   if(selected_robots.length > 0) {
     for(var i = 1; i < selected_robots.length; i++) {
       var current_x = Math.round((selected_robots[i].x / pozyx_x_max) * width);
@@ -277,6 +279,7 @@ function createRobot(vars) {
     color_fill: fill_color,
     color_stroke: 'white',
     configuration: 'Single',
+    sub_config: 
     controller: 'Waypoint',
     cluster: undefined
   };
@@ -431,7 +434,6 @@ function removeRobot(r) {
   }
   r.fields[0].parentElement.parentElement.parentElement.removeChild(document.getElementById('rc-' + r.robotNumber));
 }
-function displaySettings(event, id, graphics) {
   document.getElementById('waypoints-button').style.display = 'block'
   var rnumber = 0;
   var container;
@@ -452,9 +454,11 @@ function displaySettings(event, id, graphics) {
         robot.color_stroke = '#FF0000';
       }
       if(robot.configuration === 'Cluster') {
-        selected_robots = [];
-        resetAllStrokes();
-        resetAllBackgrounds();
+        if(!event.shiftKey) {
+          selected_robots = [];
+          resetAllStrokes();
+          resetAllBackgrounds();
+        }
         current_clusters[robot.cluster].forEach((robot) => {
           selected_robots.push(robot);
           robot.color_stroke = '#FF0000';

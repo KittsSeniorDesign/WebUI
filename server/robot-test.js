@@ -92,3 +92,25 @@ var t = timers.setInterval(() => {
         process.exit(1);
     }
 }, 10);
+
+var u = 2000;
+var v = 1250;
+var w = timers.setInterval(() => {
+    if(u > 3874) {
+        u = 0;
+    }
+    var val_0 = Math.round(generateRandom(3,3));
+    var val_1 = Math.round(generateRandom(0,0));
+    var val_2 = Math.round(generateRandom(0,0));
+    var val_3 = u++;
+    var val_4 = v;
+    var val_5 = Math.round(generateRandom(0,0));
+    var val_6 = Math.round(generateRandom(0,0));
+    var val_7 = Math.round(generateRandom(270,270));
+    try {
+        tcpClient.write('robot_' + val_0 + ',' + val_1 + ',' + val_2 + ',' + val_3 + ',' + val_4 + ',' + val_5 + ',' + val_6 + ',' + val_7 + ';');
+    } catch(e) {
+        console.error(`An error has occured: ${e.message}`);
+        process.exit(1);
+    }
+}, 10);
