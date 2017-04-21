@@ -228,11 +228,11 @@ function reconfigureDT(sinkName,chanName) {
 }
 function setDT(message) {
   if(message.includes('Channel')) {
-    message.split(' ');
+    var m = message.split(' ');
     if(!message.includes('robot')) { //controller
-      console.log(message[0]);
+      console.log(m[0]);
     } else { //robot
-      console.log(message[0]);
+      console.log(m[0]);
     }
   }
 }
