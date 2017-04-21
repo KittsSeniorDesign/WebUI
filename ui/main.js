@@ -233,13 +233,17 @@ function setDT(message) {
     if(msg.includes('Channel')) {
       var msg = msg.split(' ')[0];
       if(!msg.includes('robot')) { //controller
-        console.log(msg);
+        var parent = document.querySelector('#controllers-dropdown');
+        var child = document.createElement('div');
+        child.addEventListener('click', function() {
+          setDropdown('controllers-button', msg);
+        });
+        child.innerHTML = msg;
       } else { //robot
         console.log(msg);
       }
     }
   });
-  
 }
 function resetValues(r) {
   r.values.forEach((value,i) => {
