@@ -230,16 +230,16 @@ function setDT(message) {
   message = message.substring(10);
   var m = message.split(',');
   m.forEach((msg) => {
-    console.log(msg);
+    if(msg.includes('Channel')) {
+      var msg = msg.split(' ');
+      if(!msg.includes('robot')) { //controller
+        console.log(m);
+      } else { //robot
+        console.log(m);
+      }
+    }
   });
-  // if(message.includes('Channel')) {
-  //   var m = message.split(',');
-  //   if(!message.includes('robot')) { //controller
-  //     console.log(m[1]);
-  //   } else { //robot
-  //     console.log(m[1]);
-  //   }
-  // }
+  
 }
 function resetValues(r) {
   r.values.forEach((value,i) => {
