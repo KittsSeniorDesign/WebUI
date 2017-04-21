@@ -227,14 +227,19 @@ function reconfigureDT(sinkName,chanName) {
   }
 }
 function setDT(message) {
-  if(message.includes('Channel')) {
-    var m = message.split(' ');
-    if(!message.includes('robot')) { //controller
-      console.log(m[1]);
-    } else { //robot
-      console.log(m[1]);
-    }
-  }
+  message = message.substring(10);
+  var m = message.split(',');
+  m.forEach((msg) => {
+    console.log(msg);
+  });
+  // if(message.includes('Channel')) {
+  //   var m = message.split(',');
+  //   if(!message.includes('robot')) { //controller
+  //     console.log(m[1]);
+  //   } else { //robot
+  //     console.log(m[1]);
+  //   }
+  // }
 }
 function resetValues(r) {
   r.values.forEach((value,i) => {
