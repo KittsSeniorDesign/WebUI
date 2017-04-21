@@ -240,9 +240,16 @@ function setDT(message) {
         });
         child.innerHTML = msg;
         parent.appendChild(child);
-        console.log(msg);
+        console.log(`Controller: ${msg}`);
       } else { //robot
-        console.log(msg);
+        var parent = document.querySelector('#robots-dropdown');
+        var child = document.createElement('div');
+        child.addEventListener('click', function() {
+          setDropdown('robots-button', msg);
+        });
+        child.innerHTML = msg;
+        parent.appendChild(child);
+        console.log(`Robot: ${msg}`);
       }
     }
   });
