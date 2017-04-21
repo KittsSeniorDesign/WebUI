@@ -27,7 +27,9 @@ const wss = new ws.Server({
   port: wsPort
 });
 
+/* websocket server */
 wss.on('connection', (ws) => {
+  /* message received */
   ws.on('message', (m) => {
     console.log(`Received on ${color_websocket('Websocket')}: ${color_packet(m)}`);
     if(tcpClient) {
@@ -35,11 +37,13 @@ wss.on('connection', (ws) => {
       console.log(`Sent on ${color_tcp('TCP')}: ${color_packet(m)}`);
     }
   });
+  /* websocket closed */
   ws.on('close', () => {
     console.log(`${color_websocket('Websocket client')} has ${color_disconnect('disconnected')}.`);
     logger.log.info('Websocket client has disconnected');
     websocketClient = undefined;
   })
+  /* websocket error */
   ws.on('error', (e) => {
     console.log(`An ${color_error('error')} has occured: ${color_error(e.message)}`);
     logger.log.error(e.message);
@@ -49,16 +53,18 @@ wss.on('connection', (ws) => {
   logger.log.info('Websocket client has connected');
   websocketClient = ws;
 })
-    
+/* tcp server */
 const nss = net.createServer((c) => {
   tcpClient = c;
   console.log(`${color_tcp('TCP client')} has ${color_connect('connected')}.`);
   logger.log.info('TCP client has connected')
+  /* tcp closed */
   c.on('end', () => {
     console.log(`${color_tcp('TCP client')} has ${color_disconnect('disconnected')}.`);
     logger.log.info('TCP client has disconnected');
     tcpClient = undefined;
   });
+  /* tcp message */
   c.on('data', (m) => {
       console.log(`Received on ${color_tcp('TCP')}: ${color_packet(m)}`);
     if(websocketClient) {
@@ -68,19 +74,22 @@ const nss = net.createServer((c) => {
       }
     }
   });
+  /* tcp error */
   c.on('error', (e) => {
     console.log(`An ${color_error('error')} has occured: ${color_error(e.message)}`);
     logger.log.error(e.message);
     tcpClient = undefined;
   });
 });
-
+/* tcp server listening for a connection */
 nss.listen(tcpPort, () => {
   console.log(`${color_tcp('TCP server')} listening on port ${color_tcp(tcpPort)}.`);
 });
 
+/* exit on SIGINT */
 process.on('SIGINT', () => { process.exit() });
 
+/* log server shutdown */
 process.on('exit', () => {
   process.stdout.write("\033[2K\033[200D");
   logger.logSync.info('Server shut down');

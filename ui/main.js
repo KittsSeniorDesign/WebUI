@@ -14,13 +14,19 @@ var canvas_flag_position = {x:undefined,y:undefined};
 var current_coordinate_list = [];
 var number_of_coordinates = 0;
 var current_clusters = [];
+var current_sinks = [];
+var current_channels = [];
+var current_sources = [];
 
-
+/* set the canvas' size once the page has loaded (js gets executed afterward) */
 setCanvasDimensions();
+/* adjust canvas size if window is resized */
 window.onresize = setCanvasDimensions;
+/* toggles the shown content of a div dropdown */
 function toggleDropdown(dropdown) {
   document.getElementById(dropdown).classList.toggle("show");
 }
+/* if a robot has been set to be in a cluster, it removes it */
 function removeRobotFromCluster(robot) {
   for(var i = 0; i < current_clusters[robot.cluster].length; i++) {
     if( current_clusters[robot.cluster].robotNumber === robot.robotNumber) {
@@ -28,16 +34,20 @@ function removeRobotFromCluster(robot) {
     }
   }
 }
+/* adjusts the cluster dropdown accordingly, pushes all robots in a cluster to an array */ 
 function setDropdown(dropdown,option) {
   document.getElementById(dropdown).innerHTML = option;
   var clstr = [];
   selected_robots.forEach((robot) => {
+    /* we have specified that the robot is not in a cluster with the dropdown */
     if(robot.configuration === 'Cluster') {
       if(option != 'Cluster') {
         removeRobotFromCluster(robot);
       }
     }
+    /* set the new configuration option */
     robot.configuration = option;
+    /* add to list of clusters if the configuration is a cluster */
     if(option === 'Cluster') {
       robot.cluster = current_clusters.length;
       clstr.push(robot);
@@ -46,7 +56,9 @@ function setDropdown(dropdown,option) {
   if(option === 'Cluster')
     current_clusters.push(clstr);
 }
+/* if we click on the dropdown */
 window.onclick = function(event) {
+  /* if we clicked on the button, show all the content */
   if (!event.target.matches('.dropbtn')) {
     document.querySelectorAll('.dropdown-content').forEach((dropdown) => {
       if(dropdown.classList.contains('show'))
@@ -54,7 +66,9 @@ window.onclick = function(event) {
     });
   }
 }
+/* function to recognize key events */
 document.addEventListener('keydown', function(e) {
+  /* if escape is pressed, we deactivate the waypoint flag, and unselect any selected robots */
   if(e.key === 'Escape' || e.keyCode === 27) {
     if(canvas_flag_active) {
       escapeFlag();
@@ -63,15 +77,18 @@ document.addEventListener('keydown', function(e) {
     } else {
       
     }
+  /* we remove the last active waypoint */
   } else if(e.key === 'Backspace' || e.keyCode == 8) {
     removeLastWaypoint();
   }
 });
+/* reset the background on the robot cards, reset outline of robots on canvas, empty selected robots array */
 function unselectAll() {
   resetAllStrokes();
   resetAllBackgrounds();
   selected_robots = [];
 }
+/* send waypoints over websocket */
 function sendWaypoints() {
   for(var i = 0; i < current_coordinate_list.length; i++) {
     selected_robots.forEach((robot) => {
@@ -81,11 +98,13 @@ function sendWaypoints() {
     });
   }
 }
+/* removes the little flag that accompanies the cursor when it's active */
 function escapeFlag() {
   canvas.removeEventListener('mousemove', showFlag);
   canvas_flag_active = false;
   canvas_flag_position = {x:undefined,y:undefined};
 }
+/* removes the last active waypoint from both the canvas, and the waypoints container */
 function removeLastWaypoint() {
   if(number_of_coordinates > 0) {
     number_of_coordinates--;
@@ -93,7 +112,8 @@ function removeLastWaypoint() {
     document.querySelector('#coordinates-list').removeChild(document.querySelector('#coordinates-list > div'));
   }
 }
-function removeallWaypoints() {
+/* removes all waypoints, both from the container and canvas, currently unused */
+function removeAllWaypoints() {
   if(!canvas_flag_active) {
     number_of_coordinates = 0;
     current_coordinate_list = [];
@@ -104,6 +124,7 @@ function removeallWaypoints() {
     });
   }
 }
+/* original flag style, currently unused */
 function actualFlag(x,y) {
   var ctx = canvas.getContext('2d');
   ctx.lineTo(x+21,y+22);
@@ -116,6 +137,7 @@ function actualFlag(x,y) {
   ctx.lineTo(x+12,y+4);
   ctx.lineTo(x+21,y+0);
 }
+/* alternate flag style */
 function alternateFlag(x,y) {
   var ctx = canvas.getContext('2d');
   ctx.lineTo(x+21,y+25);
@@ -124,6 +146,7 @@ function alternateFlag(x,y) {
   ctx.lineTo(x+8,y+8);
   ctx.lineTo(x+21,y+0);
 }
+/* draws the flag on the canvas at x,y and includes a counter i */
 function drawFlag(x,y,i) {
   var canvas = document.getElementById('canvas');
   if (canvas.getContext) {
@@ -144,6 +167,7 @@ function drawFlag(x,y,i) {
     ctx.fill();
   }
 }
+/* draw all currently active flags at their respective locations on the canvas */
 function drawFlags() {
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
@@ -161,6 +185,7 @@ function drawFlags() {
     }
   }
 }
+/* connects selected robots together with a line, also shows central point */
 function connectSelected() {
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
@@ -210,6 +235,7 @@ function connectSelected() {
   }
   context.setLineDash([]);
 }
+/* sends a request message to dataturbine for sources, sinks, and channels */
 function requestDT() {
   if(ws.readyState == 1) {
     ws.send('requestDTconfig()');
@@ -218,6 +244,7 @@ function requestDT() {
     window.alert('Not connected to server.');
   }
 }
+/* sends reconfigured settings to dataturbine */
 function reconfigureDT(sinkName,chanName) {
   if(ws.readyState == 1) {
     ws.send('reconfSink2Chan(' + sinkName + ', ' + chanName + ')');
@@ -226,13 +253,18 @@ function reconfigureDT(sinkName,chanName) {
     window.alert('Not connected to server.');
   }
 }
+/* parses info received from datatubine for sources, sinks, channels, sets dropdown accordingly */
 function setDT(message) {
   message = message.substring(10);
   var m = message.split(',');
+  current_channels = [];
+  current_sinks = [];
+  current_sources = [];
   m.forEach((msg) => {
     if(msg.includes('Channel')) {
       var msg = msg.split(' ')[0];
-      if(!msg.includes('robot')) { //controller
+      current_channels.push(msg);
+      if(!msg.includes('robot')) { /* controller */
         var parent = document.querySelector('#controllers-dropdown');
         var child = document.createElement('div');
         child.addEventListener('click', function() {
@@ -241,7 +273,7 @@ function setDT(message) {
         child.innerHTML = msg;
         parent.appendChild(child);
         console.log(`Controller: ${msg}`);
-      } else { //robot
+      } else { /* robot */
         var parent = document.querySelector('#robots-dropdown');
         var child = document.createElement('div');
         child.addEventListener('click', function() {
@@ -251,15 +283,23 @@ function setDT(message) {
         parent.appendChild(child);
         console.log(`Robot: ${msg}`);
       }
-    }
+    } else if(msg.includes('Sink')) {
+      var msg = msg.split(' ')[0];
+      current_sinks.push(msg);
+    } else if(msg.includes('Source')) {
+      var msg = msg.split(' ')[0];
+      current_sources.push(msg);
+    } else {}
   });
 }
+/* sets the robot card fields to 0 */
 function resetValues(r) {
   r.values.forEach((value,i) => {
     if(r.fields[i]!='Robot ID')
       value.innerHTML = '0';
   });
 }
+/* draws all active robots on the canvas */
 function drawRobots() {
   var bound_x = pozyx_x_max;
   var bound_y = pozyx_y_max;
@@ -293,6 +333,7 @@ function drawRobots() {
     context.stroke();
   });
 }
+/* sets the canvas dimensions */
 function setCanvasDimensions() {
   var canvas = document.getElementById('canvas');
   var width = window.innerWidth * 0.73408;
@@ -300,9 +341,11 @@ function setCanvasDimensions() {
   canvas.width = width;
   canvas.height = height;
 }
+/* generates a random number number between low and high, used in color generation for robots */
 function generateRandom(low,high) {
     return Math.random() * (high - low) + low;
 }
+/* creates a robot object with the array of variables supplied in the argument */
 function createRobot(vars) {
   var r_f = Math.round(generateRandom(0,255));
   var g_f = Math.round(generateRandom(0,255));
@@ -334,6 +377,7 @@ function createRobot(vars) {
     current_field.classList.add('robot_item-' + vars[0]);
     current_field.classList.add('unselectable');
     var val_id;
+    /* sets the robot card fields */
     switch(i) {
       case 0:
         current_field.innerHTML = 'Robot ID';   val_id = 'robot_id';   break;
@@ -374,6 +418,7 @@ function createRobot(vars) {
   robot.robotNumber = parseInt(robot.values[0].innerHTML);
   return robot;
 }
+/* handles robot timeout */
 function timer(r) {
   clearTimeout(r.timeRemainingDisconnect);
   clearTimeout(r.timeRemainingRemoval);
@@ -386,6 +431,7 @@ function timer(r) {
     removeRobot(r);
   }, removal_timeout);
 }
+/* updates existing robots with provided variables, otherwise creates them */
 function updateRobot(vars) {
   var add_robot_flag = true;
   if(current_robot_list.length) {
@@ -423,6 +469,7 @@ function updateRobot(vars) {
     addRobot(createRobot(vars));
   }
 }
+/* parses message received from websocket */
 function checkMessage(m) {
   if(m.includes('DTConfig: ')) {
     console.log('Received channels and sinks from DataTurbine.');
@@ -436,6 +483,7 @@ function checkMessage(m) {
     console.log(m);
   }
 }
+/* adds a new robot card */
 function addRobot(r) {
   number_of_robots += 1;
   var container = document.getElementById('robot-item-container');
@@ -471,6 +519,7 @@ function addRobot(r) {
   timer(r);
   
 }
+/* removes a robot */
 function removeRobot(r) {
   number_of_robots--;
   for(var i = 0; i < current_robot_list.length; i++) {
@@ -480,6 +529,7 @@ function removeRobot(r) {
   }
   r.fields[0].parentElement.parentElement.parentElement.removeChild(document.getElementById('rc-' + r.robotNumber));
 }
+/* sets robot card background color, canvas robot outline color, brings up cluster information */
 function displaySettings(event, id, graphics) {
   document.getElementById('waypoints-button').style.display = 'block'
   var rnumber = 0;
@@ -536,11 +586,13 @@ function displaySettings(event, id, graphics) {
   }
   document.querySelector('#waypoints-button').style.display = 'inline';
 }
+/* resets the background color of the robot cards */
 function resetAllBackgrounds() {
   document.querySelectorAll('.robot-item-div').forEach((robot_item) => {
      robot_item.style.backgroundColor = 'rgb(34, 34, 34)'; 
   });
 }
+/* gets the mouse position relative to the canvas */
 function getMousePos(canvas, evt) {
   var rect = canvas.getBoundingClientRect();
   return {
@@ -548,6 +600,7 @@ function getMousePos(canvas, evt) {
     y: evt.clientY - rect.top
   };
 }
+/* sets the flag to follow the cursor */
 function showFlag(evt) {
   var pos = getMousePos(canvas, evt);
     canvas_flag_position.x = pos.x - 20;
@@ -555,6 +608,7 @@ function showFlag(evt) {
     drawFlag(pos.x - 20,pos.y - 27);
   canvas_flag_active = true;
 }
+/* resets the outline of the robots on the canvas */
 function resetAllStrokes() {
   document.getElementById('waypoints-button').style.display = 'none'
   selected_robots = [];
@@ -563,7 +617,9 @@ function resetAllStrokes() {
     robot.color_stroke = 'white';
   });
 }
+/* creates a new websocket */
 ws = new WebSocket("ws://127.0.0.1:9002/");
+/* listen to clicks on canvas, determine if robot was clicked */
 document.getElementById('canvas').addEventListener('mousedown', function canvasClick(e) {
   var canvas = document.getElementById('canvas')
   var canvas_coord = canvas.getBoundingClientRect();
@@ -576,7 +632,7 @@ document.getElementById('canvas').addEventListener('mousedown', function canvasC
   var height = canvas_container.offsetHeight;
   var shiftFlag = false;
   var onRobot = false;
-  
+  /* flag box */
   if((x > (width - 50) && x < (width - 10)) && (y > (height - 50) && (y < height-10))) {
     if(!canvas_flag_active) {
       var canvas = document.getElementById('canvas');
@@ -608,15 +664,17 @@ document.getElementById('canvas').addEventListener('mousedown', function canvasC
     }
   }
 });
-// ws.binaryType = 'arraybuffer'
+/* websocket connection is active */
 ws.onopen = function() {
   console.log("Connection established!");
 }
+/* websocket connection is closed */
 ws.onclose = function() {
   console.log("Connection closed!");
 }
+/* whenever there's a message received over the websocket */
 ws.onmessage = function(m) {
-  // clearConsole();
+  /* handle message */
   if(typeof m.data === 'string') {
     checkMessage(m.data);
   } else if(m.data instanceof Blob) {
@@ -629,6 +687,7 @@ ws.onmessage = function(m) {
     console.log(m.data instanceof ArrayBuffer);
   }
 }
+/* clear the console of all text */
 function clearConsole() {
   console.API;
   if (typeof console._commandLineAPI !== 'undefined') {

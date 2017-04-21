@@ -1,6 +1,8 @@
 const fs = require('fs');
 
+/* async logger */
 exports.log = {
+  /* message level */
   error(message) {
     this.writeFile(message,'ERROR');
   },
@@ -13,6 +15,7 @@ exports.log = {
   info(message) {
     this.writeFile(message,'INFO');
   },
+  /* write to server.log */
   writeFile(message,level) {
     if(process.platform === 'darwin') {
       var _path = __dirname + '/server.log';
@@ -36,8 +39,9 @@ exports.log = {
     });
   }
 }
-
+/* synchronous logging */
 exports.logSync = {
+  /* message level */
   error(message) {
     this.writeFile(message,'ERROR');
   },
@@ -50,6 +54,7 @@ exports.logSync = {
   info(message) {
     this.writeFile(message,'INFO');
   },
+  /* write to server.log */
   writeFile(message,level) {
     if(process.platform === 'darwin') {
       var _path = __dirname + '/server.log';
