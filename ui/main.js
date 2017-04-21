@@ -230,9 +230,9 @@ function setDT(message) {
   if(message.includes('Channel')) {
     var m = message.split(' ');
     if(!message.includes('robot')) { //controller
-      console.log(m[0]);
+      console.log(m[1]);
     } else { //robot
-      console.log(m[0]);
+      console.log(m[1]);
     }
   }
 }
