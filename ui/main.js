@@ -239,6 +239,8 @@ function setDT(message) {
           setDropdown('controllers-button', msg);
         });
         child.innerHTML = msg;
+        parent.appendChild(child);
+        console.log(msg);
       } else { //robot
         console.log(msg);
       }
