@@ -73,7 +73,12 @@ function unselectAll() {
   selected_robots = [];
 }
 function sendWaypoints() {
-  
+  for(var i = 0; i < current_coordinate_list.length; i++) {
+    selected_robots.forEach((robot) => {
+      var send_string = `robot_${robot.robotNumber} w ${current_coordinate_list[i].x_actual} ${current_coordinate_list[i].y_actual}`;
+      console.log(send_string);
+    });
+  }
 }
 function escapeFlag() {
   canvas.removeEventListener('mousemove', showFlag);
@@ -160,13 +165,23 @@ function connectSelected() {
   var context = canvas.getContext('2d');
   var width = canvas.width;
   var height = canvas.height;
+  var mid_x = undefined;
+  var mid_y = undefined;
   context.setLineDash([5]);
-  if(selected_robots.length > 0) {
+  if(selected_robots.length > 1) {
+    mid_x = 0;
+    mid_y = 0;
     for(var i = 1; i < selected_robots.length; i++) {
       var current_x = Math.round((selected_robots[i].x / pozyx_x_max) * width);
       var current_y = Math.floor(height - ((selected_robots[i].y / pozyx_y_max) * height));
       var prev_x = Math.round((selected_robots[i-1].x / pozyx_x_max) * width);
       var prev_y = Math.floor(height - ((selected_robots[i-1].y / pozyx_y_max) * height));
+      mid_x += prev_x;
+      mid_y += prev_y;
+      if(i === (selected_robots.length - 1)) {
+        mid_x += current_x;
+        mid_y += current_y;
+      }
       context.beginPath();
       context.lineWidth = 3;
       context.strokeStyle = '#0000FF';
@@ -184,6 +199,13 @@ function connectSelected() {
         context.stroke();
       }
     }
+    mid_x /= i;
+    mid_y /= i;
+    context.moveTo(mid_x, mid_y);
+    context.setLineDash([]);
+    context.fillStyle = '#FFFF00';
+    context.arc(mid_x, mid_y, 5, 0, 2 * Math.PI);
+    context.fill();
   }
   context.setLineDash([]);
 }
