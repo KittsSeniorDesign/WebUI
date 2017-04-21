@@ -233,9 +233,9 @@ function setDT(message) {
     if(msg.includes('Channel')) {
       var msg = msg.split(' ');
       if(!msg.includes('robot')) { //controller
-        console.log(m);
+        console.log(msg);
       } else { //robot
-        console.log(m);
+        console.log(msg);
       }
     }
   });
