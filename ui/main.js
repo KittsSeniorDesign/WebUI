@@ -227,7 +227,14 @@ function reconfigureDT(sinkName,chanName) {
   }
 }
 function setDT(message) {
-  
+  if(message.includes('Channel')) {
+    message.split(' ');
+    if(!message.includes('robot')) { //controller
+      console.log(message[0]);
+    } else { //robot
+      console.log(message[0]);
+    }
+  }
 }
 function resetValues(r) {
   r.values.forEach((value,i) => {
@@ -444,6 +451,7 @@ function addRobot(r) {
   current_robot_list.push(r);
   container.appendChild(rc);
   timer(r);
+  
 }
 function removeRobot(r) {
   number_of_robots--;
