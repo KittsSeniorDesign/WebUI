@@ -231,7 +231,7 @@ function setDT(message) {
   var m = message.split(',');
   m.forEach((msg) => {
     if(msg.includes('Channel')) {
-      var msg = msg.split(' ');
+      var msg = msg.split(' ')[0];
       if(!msg.includes('robot')) { //controller
         console.log(msg);
       } else { //robot
