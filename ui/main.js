@@ -26,6 +26,14 @@ window.onresize = setCanvasDimensions;
 function toggleDropdown(dropdown) {
   document.getElementById(dropdown).classList.toggle("show");
 }
+/* removes all currently timed out robot cards */
+function removeDisconencted() {
+  current_robot_list.forEach((robot) => {
+    if(robot.status === 'Disconencted') {
+      removeRobot(robot);
+    }
+  });
+}
 /* if a robot has been set to be in a cluster, it removes it */
 function removeRobotFromCluster(robot) {
   for(var i = 0; i < current_clusters[robot.cluster].length; i++) {
@@ -347,6 +355,10 @@ function generateRandom(low,high) {
 }
 /* creates a robot object with the array of variables supplied in the argument */
 function createRobot(vars) {
+  if(vars.length < 8) { // probably no velocity, so we pad
+    vars[7] = vars[6];
+    vars[6] = 0;
+  }
   var r_f = Math.round(generateRandom(0,255));
   var g_f = Math.round(generateRandom(0,255));
   var b_f = Math.round(generateRandom(0,255));
@@ -361,6 +373,7 @@ function createRobot(vars) {
     robotNumber: undefined,
     timeRemainingDisconnect: 0,
     timeRemainingRemoval: 0,
+    status:'Connected',
     x: undefined,
     y: undefined,
     heading: 0,
@@ -406,7 +419,7 @@ function createRobot(vars) {
     current_value.classList.add('unselectable');
     if(val_id === 'status') {
       current_value.classList.add('status-connected');
-      current_value.innerHTML = 'Connected';
+      current_value.innerHTML = robot.status;
     } else if(val_id === 'color') {
       current_value.style.backgroundColor = fill_color;
     } else {
@@ -423,7 +436,8 @@ function timer(r) {
   clearTimeout(r.timeRemainingDisconnect);
   clearTimeout(r.timeRemainingRemoval);
   r.timeRemainingDisconnect = setTimeout(() => {
-    r.values[number_of_fields-1].innerHTML = 'Disconnected';
+    r.status = 'Disconnected';
+    r.values[number_of_fields-1].innerHTML = r.status;
     r.values[number_of_fields-1].classList.remove('status-connected');
     r.values[number_of_fields-1].classList.add('status-disconnected');
   }, data_timeout);
@@ -440,7 +454,8 @@ function updateRobot(vars) {
         add_robot_flag = false;
         for(var j = 0; j < number_of_fields; j++) {
           if(current_robot_list[i].fields[j].innerHTML === 'Status') {
-            current_robot_list[i].values[j].innerHTML= 'Connected';
+            current_robot_list[i].status = 'Connected';
+            current_robot_list[i].values[j].innerHTML = current_robot_list[i].status;
             current_robot_list[i].values[j].classList.remove('status-disconnected');
             current_robot_list[i].values[j].classList.add('status-connected');
           } else if(current_robot_list[i].fields[j].innerHTML === 'Position X') {
@@ -521,6 +536,9 @@ function addRobot(r) {
 }
 /* removes a robot */
 function removeRobot(r) {
+  if(r.configuration === 'Cluster') {
+    removeRobotFromCluster(r);
+  }
   number_of_robots--;
   for(var i = 0; i < current_robot_list.length; i++) {
     if(r.robotNumber === current_robot_list[i].robotNumber) {
