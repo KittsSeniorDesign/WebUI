@@ -355,10 +355,6 @@ function generateRandom(low,high) {
 }
 /* creates a robot object with the array of variables supplied in the argument */
 function createRobot(vars) {
-  if(vars.length < 8) { // probably no velocity, so we pad
-    vars[7] = vars[6];
-    vars[6] = 0;
-  }
   var r_f = Math.round(generateRandom(0,255));
   var g_f = Math.round(generateRandom(0,255));
   var b_f = Math.round(generateRandom(0,255));
@@ -448,6 +444,11 @@ function timer(r) {
 /* updates existing robots with provided variables, otherwise creates them */
 function updateRobot(vars) {
   var add_robot_flag = true;
+  if(vars.length < 8) { // probably no velocity, so we pad
+    vars[7] = vars[6];
+    vars[6] = 0;
+    console.log('less');
+  }
   if(current_robot_list.length) {
     for(var i = 0; i < current_robot_list.length; i++) {
       if(current_robot_list[i].values[0].innerHTML == vars[0]) {

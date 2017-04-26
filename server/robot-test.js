@@ -39,10 +39,10 @@ var t = timers.setInterval(() => {
     var val_3 = i++;
     var val_4 = k;
     var val_5 = Math.round(generateRandom(0,0));
+    // var val_6 = Math.round(generateRandom(0,0));
     var val_6 = Math.round(generateRandom(0,0));
-    var val_7 = Math.round(generateRandom(0,0));
     try {
-        tcpClient.write('robot_' + val_0 + ',' + val_1 + ',' + val_2 + ',' + val_3 + ',' + val_4 + ',' + val_5 + ',' + val_6 + ',' + val_7 + ';');
+        tcpClient.write('robot_' + val_0 + ',' + val_1 + ',' + val_2 + ',' + val_3 + ',' + val_4 + ',' + val_5 + ',' + val_6  + ';');
     } catch(e) {
         console.error(`An error has occured: ${e.message}`);
         process.exit(1);
