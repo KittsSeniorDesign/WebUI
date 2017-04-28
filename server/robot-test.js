@@ -12,6 +12,12 @@ nss.connect(9001, '127.0.0.1', function() {
 
 nss.on('data', function(data) {
     console.log('Received on TCP: ' + data);
+    if(data == 'requestDTconfig()') {
+        try{
+            tcpClient.write('DTConfig: matlab/commands Channel,robot_1 Sink,robot_1-source/states Channel');
+            console.log('Sent: DTConfig: matlab/commands Channel,robot_1 Sink,robot_1-source/states Channel');
+        } catch(e) {}
+    }
 });
 
 nss.on('close', function() {

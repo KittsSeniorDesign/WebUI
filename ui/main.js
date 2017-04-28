@@ -27,9 +27,9 @@ function toggleDropdown(dropdown) {
   document.getElementById(dropdown).classList.toggle("show");
 }
 /* removes all currently timed out robot cards */
-function removeDisconencted() {
+function removeDisconnected() {
   current_robot_list.forEach((robot) => {
-    if(robot.status === 'Disconencted') {
+    if(robot.status === 'Disconnected') {
       removeRobot(robot);
     }
   });
@@ -268,6 +268,9 @@ function setDT(message) {
   current_channels = [];
   current_sinks = [];
   current_sources = [];
+  document.querySelectorAll('#controllers-dropdown>div').forEach((element) => {
+    document.querySelector('#controllers-dropdown').removeChild(element);
+  });
   m.forEach((msg) => {
     if(msg.includes('Channel')) {
       var msg = msg.split(' ')[0];
@@ -447,7 +450,6 @@ function updateRobot(vars) {
   if(vars.length < 8) { // probably no velocity, so we pad
     vars[7] = vars[6];
     vars[6] = 0;
-    console.log('less');
   }
   if(current_robot_list.length) {
     for(var i = 0; i < current_robot_list.length; i++) {
@@ -466,7 +468,7 @@ function updateRobot(vars) {
             current_robot_list[i].y = vars[j];
             current_robot_list[i].values[j].innerHTML = vars[j];
           } else if(current_robot_list[i].fields[j].innerHTML === 'Heading') {
-            current_robot_list[i].heading = (parseFloat(vars[j] - 90) * Math.PI / 180);
+            current_robot_list[i].heading = (parseFloat(vars[j] - (Math.PI / 2)) * 180 / Math.PI);
             current_robot_list[i].values[j].innerHTML = vars[j];
           } else if(current_robot_list[i].fields[j].innerHTML === 'Color') {
             
@@ -489,6 +491,8 @@ function updateRobot(vars) {
 function checkMessage(m) {
   if(m.includes('DTConfig: ')) {
     console.log('Received channels and sinks from DataTurbine.');
+    setDT(m);
+  } else if(m.includes('Source') || m.includes('Sink') || m.includes('Channel')) {
     setDT(m);
   } else if(m.includes('robot_')) {
     var robot_id = m.split(',')[0].slice(6);
