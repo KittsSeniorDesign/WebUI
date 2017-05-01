@@ -295,7 +295,7 @@ function setDT(message) {
         child.addEventListener('click', function() {
           setDropdown('robots-button', msg);
         });
-        child.innerHTML = msg;
+        child.innerHTML = msg.split('-')[0];
         parent.appendChild(child);
         console.log(`Robot: ${msg}`);
       }
