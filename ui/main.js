@@ -505,7 +505,7 @@ function checkMessage(m) {
   } else if(m.includes('Source') || m.includes('Sink') || m.includes('Channel')) {
     setDT(m);
   } else if(m.includes('robot_')) {
-    var robot_id = m.split(',')[0].slice(6);
+    var robot_id = m.split(',')[0].slice(6).split('-')[0];
     var robot_vars = m.split(';')[0].split(',');
     robot_vars[0] = robot_id;
     updateRobot(robot_vars);
