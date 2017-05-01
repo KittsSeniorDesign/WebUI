@@ -478,8 +478,8 @@ function updateRobot(vars) {
             current_robot_list[i].y = vars[j];
             current_robot_list[i].values[j].innerHTML = vars[j];
           } else if(current_robot_list[i].fields[j].innerHTML === 'Heading') {
-            current_robot_list[i].heading = (parseFloat(vars[j] - (Math.PI / 2)) * 180 / Math.PI);
-            current_robot_list[i].values[j].innerHTML = vars[j];
+            current_robot_list[i].heading = (parseFloat(vars[j]) * 180 / Math.PI);
+            current_robot_list[i].values[j].innerHTML = (parseFloat(vars[j]) * 180 / Math.PI);
           } else if(current_robot_list[i].fields[j].innerHTML === 'Color') {
             
           } else {
