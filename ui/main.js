@@ -356,6 +356,7 @@ function drawRobots() {
     context.stroke();
   });
 }
+window.setInterval(drawRobots, 50);
 /* sets the canvas dimensions */
 function setCanvasDimensions() {
   var canvas = document.getElementById('canvas');
