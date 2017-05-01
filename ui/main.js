@@ -294,12 +294,13 @@ function setDT(message) {
         parent.appendChild(child);
         console.log(`Controller: ${msg}`);
       } else { /* robot */
+        msg = msg.split('-')[0];
         var parent = document.querySelector('#robots-dropdown');
         var child = document.createElement('div');
         child.addEventListener('click', function() {
           setDropdown('robots-button', msg);
         });
-        child.innerHTML = msg.split('-')[0];
+        child.innerHTML = msg;
         parent.appendChild(child);
         console.log(`Robot: ${msg}`);
       }
