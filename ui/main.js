@@ -274,7 +274,11 @@ function setDT(message) {
   current_sinks = [];
   current_sources = [];
   document.querySelectorAll('#controllers-dropdown>div').forEach((element) => {
-    document.querySelector('#controllers-dropdown').removeChild(element);
+    if(element.innerHTML != 'Waypoints')
+      document.querySelector('#controllers-dropdown').removeChild(element);
+  });
+  document.querySelectorAll('#robots-dropdown>div').forEach((element) => {
+    document.querySelector('#robots-dropdown').removeChild(element);
   });
   m.forEach((msg) => {
     if(msg.includes('Channel')) {
