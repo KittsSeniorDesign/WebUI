@@ -480,8 +480,8 @@ function updateRobot(vars) {
             current_robot_list[i].y = vars[j];
             current_robot_list[i].values[j].innerHTML = vars[j];
           } else if(current_robot_list[i].fields[j].innerHTML === 'Heading') {
-            current_robot_list[i].heading = parseFloat(vars[j]) + Math.PI;
-            current_robot_list[i].values[j].innerHTML = Math.round(((parseFloat(vars[j]) + Math.PI) * 180 / Math.PI) * 100)/100;
+            current_robot_list[i].heading = parseFloat(vars[j]);
+            current_robot_list[i].values[j].innerHTML = Math.round(((parseFloat(vars[j])) * 180 / Math.PI) * 100)/100;
           } else if(current_robot_list[i].fields[j].innerHTML === 'Color') {
             
           } else {
