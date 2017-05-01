@@ -83,6 +83,7 @@ document.addEventListener('keydown', function(e) {
       escapeFlag();
     } else if(!canvas_flag_active && selected_robots.length > 0) {
       unselectAll();
+      drawRobots();
     } else {
       
     }
@@ -348,7 +349,7 @@ function drawRobots() {
     context.lineWidth = 3;
     context.arc(current_x, current_y, robot.radius, 0, 2 * Math.PI);
     context.moveTo(current_x, current_y);
-    context.lineTo(current_x + ((robot.radius) * Math.cos(robot.heading)),current_y + ((robot.radius) * Math.sin(robot.heading)));
+    context.lineTo(current_x + ((robot.radius) * Math.cos(2*Math.PI - robot.heading)),current_y + ((robot.radius) * Math.sin(2*Math.PI - robot.heading)));
     context.strokeStyle = robot.color_stroke;
     context.fillStyle = robot.color_fill;
     context.fill();
