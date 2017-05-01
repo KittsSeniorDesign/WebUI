@@ -33,6 +33,7 @@ function removeDisconnected() {
       removeRobot(robot);
     }
   });
+  drawRobots();
 }
 /* if a robot has been set to be in a cluster, it removes it */
 function removeRobotFromCluster(robot) {
