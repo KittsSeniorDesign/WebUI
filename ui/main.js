@@ -252,6 +252,11 @@ function requestDT() {
     window.alert('Not connected to server.');
   }
 }
+function reconDT() {
+  controller_name = document.querySelector('#controllers-button').innerHTML;
+  robot_name = document.querySelector('#robots-button').innerHTML;
+  reconfigureDT(robot_name,controller_name);
+}
 /* sends reconfigured settings to dataturbine */
 function reconfigureDT(sinkName,chanName) {
   if(ws.readyState == 1) {
@@ -458,7 +463,7 @@ function updateRobot(vars) {
         for(var j = 0; j < number_of_fields; j++) {
           if(current_robot_list[i].fields[j].innerHTML === 'Status') {
             current_robot_list[i].status = 'Connected';
-            current_robot_list[i].values[j].innerHTML = current_robot_list[i].status;
+            current_robot_list[i].values[j].innerHTML = current_robot_list[i ].status;
             current_robot_list[i].values[j].classList.remove('status-disconnected');
             current_robot_list[i].values[j].classList.add('status-connected');
           } else if(current_robot_list[i].fields[j].innerHTML === 'Position X') {
