@@ -348,7 +348,7 @@ function drawRobots() {
     context.lineWidth = 3;
     context.arc(current_x, current_y, robot.radius, 0, 2 * Math.PI);
     context.moveTo(current_x, current_y);
-    context.lineTo(current_x + ((robot.radius) * Math.cos(robot.heading)), (current_y + (robot.radius) * Math.sin(robot.heading)))
+    context.lineTo(current_x + ((robot.radius) * Math.cos(robot.heading)),current_y + ((robot.radius) * Math.sin(robot.heading)));
     context.strokeStyle = robot.color_stroke;
     context.fillStyle = robot.color_fill;
     context.fill();
@@ -479,7 +479,7 @@ function updateRobot(vars) {
             current_robot_list[i].y = vars[j];
             current_robot_list[i].values[j].innerHTML = vars[j];
           } else if(current_robot_list[i].fields[j].innerHTML === 'Heading') {
-            current_robot_list[i].heading = (parseFloat(vars[j]) * 180 / Math.PI);
+            current_robot_list[i].heading = Math.round((parseFloat(vars[j]) * 180 / Math.PI) * 100)/100;;
             current_robot_list[i].values[j].innerHTML = Math.round((parseFloat(vars[j]) * 180 / Math.PI) * 100)/100;
           } else if(current_robot_list[i].fields[j].innerHTML === 'Color') {
             
