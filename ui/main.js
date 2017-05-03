@@ -118,6 +118,9 @@ function escapeFlag() {
 function removeLastWaypoint() {
   if(number_of_coordinates > 0) {
     number_of_coordinates--;
+    if(number_of_coordinates == 0) {
+      document.querySelector('#waypoints-button').style.display = 'none';
+    }
     current_coordinate_list = current_coordinate_list.slice(0,-1);
     document.querySelector('#coordinates-list').removeChild(document.querySelector('#coordinates-list > div'));
   }
@@ -297,14 +300,21 @@ function setDT(message) {
         console.log(`Controller: ${msg}`);
       } else { /* robot */
         msg = msg.split('-')[0];
-        var parent = document.querySelector('#robots-dropdown');
-        var child = document.createElement('div');
-        child.addEventListener('click', function() {
-          setDropdown('robots-button', msg);
+        var non_duplicate = true;
+        document.querySelectorAll('#robots-dropdown>div').forEach((element) => {
+          if(elemnent.innerHTML === msg) {
+            non_duplicate = false;
+          }
         });
-        child.innerHTML = msg;
-        parent.appendChild(child);
-        console.log(`Robot: ${msg}`);
+        if(non_duplicate) {
+          var parent = document.querySelector('#robots-dropdown');
+          var child = document.createElement('div');
+          child.addEventListener('click', function() {
+            setDropdown('robots-button', msg);
+          });
+          child.innerHTML = msg;
+          parent.appendChild(child);
+        }
       }
     } else if(msg.includes('Sink')) {
       var msg = msg.split(' ')[0];
@@ -391,7 +401,7 @@ function createRobot(vars) {
     heading: 0,
     radius: 15,
     color_fill: fill_color,
-    color_stroke: 'white',
+    color_stroke: '#FFFFFF',
     configuration: 'Single',
     controller: 'Waypoint',
     cluster: undefined
@@ -567,7 +577,8 @@ function removeRobot(r) {
 }
 /* sets robot card background color, canvas robot outline color, brings up cluster information */
 function displaySettings(event, id, graphics) {
-  document.getElementById('waypoints-button').style.display = 'block'
+  if(current_coordinate_list.length > 0)
+    document.getElementById('waypoints-button').style.display = 'block';
   var rnumber = 0;
   var container;
   var selection_flag = false;
@@ -620,7 +631,8 @@ function displaySettings(event, id, graphics) {
       container.style.backgroundColor = 'rgb(24, 24, 24)';
     }
   }
-  document.querySelector('#waypoints-button').style.display = 'inline';
+  if(current_coordinate_list.length > 0)
+    document.querySelector('#waypoints-button').style.display = 'inline';
 }
 /* resets the background color of the robot cards */
 function resetAllBackgrounds() {
@@ -650,7 +662,7 @@ function resetAllStrokes() {
   selected_robots = [];
   document.getElementById('configuration-button').style.display = 'none'
   current_robot_list.forEach((robot) => {
-    robot.color_stroke = 'white';
+    robot.color_stroke = '#FFFFFF';
   });
 }
 /* creates a new websocket */
@@ -685,6 +697,8 @@ document.getElementById('canvas').addEventListener('mousedown', function canvasC
     coordinates.classList.add('coordinates');
     var parent = document.getElementById('coordinates-list');
     parent.insertBefore(coordinates,parent.firstChild);
+    if(document.querySelector('#waypoints-button').style.display != 'inline' && selected_robots.length > 0)
+      document.querySelector('#waypoints-button').style.display = 'inline';
   } else {
     current_robot_list.forEach((robot) => {
       if(Math.abs(robot.x - x_actual) < 80 && Math.abs(robot.y - y_actual) < 80) {
