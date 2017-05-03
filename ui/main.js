@@ -112,22 +112,22 @@ function sendPredeterminedWaypoints() {
   var x_actual = 700;
   var y_actual = 1300;
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
   current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
   var x_actual = 3000;
   var y_actual = 1300;
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
   current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
   var x_actual = 3000;
   var y_actual = 2000;
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
   current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
   var x_actual = 700;
   var y_actual = 2000;
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
   current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
   number_of_coordinates = 4;
   for(var i = 0; i < current_coordinate_list.length; i++) {
@@ -364,6 +364,12 @@ function resetValues(r) {
     if(r.fields[i]!='Robot ID')
       value.innerHTML = '0';
   });
+}
+function drawGrid() {
+  var x_actual = 1000;
+  var y_actual = 1000;
+  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
+  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
 }
 /* draws all active robots on the canvas */
 function drawRobots() {
