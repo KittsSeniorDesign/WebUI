@@ -17,6 +17,8 @@ nss.on('data', function(data) {
             tcpClient.write('DTConfig: matlab/commands Channel,robot_1 Sink,robot_1-source/states Channel');
             console.log('Sent: DTConfig: matlab/commands Channel,robot_1 Sink,robot_1-source/states Channel');
         } catch(e) {}
+    } else if(data.includes('w')) {
+        console.log(data);
     }
 });
 

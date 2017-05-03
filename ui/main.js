@@ -108,6 +108,20 @@ function sendWaypoints() {
     });
   }
 }
+function sendPredeterminedWaypoints() {
+  current_coordinate_list.push({x_actual:700,y_actual:1300});
+  current_coordinate_list.push({x_actual:3000,y_actual:1300});
+  current_coordinate_list.push({x_actual:3000,y_actual:2000});
+  current_coordinate_list.push({x_actual:700,y_actual:2000});
+  for(var i = 0; i < current_coordinate_list.length; i++) {
+    selected_robots.forEach((robot) => {
+      var send_string = `robot_${robot.robotNumber} w ${current_coordinate_list[i].x_actual} ${current_coordinate_list[i].y_actual}`;
+      ws.send(send_string);
+      console.log(send_string);
+    });
+  }
+  current_coordinate_list = [];
+}
 /* removes the little flag that accompanies the cursor when it's active */
 function escapeFlag() {
   canvas.removeEventListener('mousemove', showFlag);
@@ -120,6 +134,8 @@ function removeLastWaypoint() {
     number_of_coordinates--;
     if(number_of_coordinates == 0) {
       document.querySelector('#waypoints-button').style.display = 'none';
+      if(selected_robots.length > 0)
+        document.querySelector('#waypoints-predetermined-button').style.display = 'block';
     }
     current_coordinate_list = current_coordinate_list.slice(0,-1);
     document.querySelector('#coordinates-list').removeChild(document.querySelector('#coordinates-list > div'));
@@ -579,6 +595,8 @@ function removeRobot(r) {
 function displaySettings(event, id, graphics) {
   if(current_coordinate_list.length > 0)
     document.getElementById('waypoints-button').style.display = 'block';
+  
+  document.querySelector('#waypoints-predetermined-button').style.display = 'block';
   var rnumber = 0;
   var container;
   var selection_flag = false;
@@ -633,6 +651,7 @@ function displaySettings(event, id, graphics) {
   }
   if(current_coordinate_list.length > 0)
     document.querySelector('#waypoints-button').style.display = 'inline';
+  document.querySelector('#waypoints-predetermined-button').style.display = 'block';
 }
 /* resets the background color of the robot cards */
 function resetAllBackgrounds() {
@@ -658,9 +677,10 @@ function showFlag(evt) {
 }
 /* resets the outline of the robots on the canvas */
 function resetAllStrokes() {
-  document.getElementById('waypoints-button').style.display = 'none'
+  document.getElementById('waypoints-button').style.display = 'none';
+  document.querySelector('#waypoints-predetermined-button').style.display = 'none';
   selected_robots = [];
-  document.getElementById('configuration-button').style.display = 'none'
+  document.getElementById('configuration-button').style.display = 'none';
   current_robot_list.forEach((robot) => {
     robot.color_stroke = '#FFFFFF';
   });
@@ -691,6 +711,7 @@ document.getElementById('canvas').addEventListener('mousedown', function canvasC
       canvas_flag_active = false;
     }
   } else if(canvas_flag_active) {
+    document.querySelector('#waypoints-predetermined-button').style.display = 'none';
     current_coordinate_list.push({x:x,y:height-y,x_actual:x_actual,y_actual:y_actual});
     var coordinates = document.createElement('div');
     coordinates.innerHTML = `Waypoint ${++number_of_coordinates}: [ ${x_actual} , ${y_actual} ] [ ${x} , ${y} ]`;
