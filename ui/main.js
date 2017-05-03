@@ -110,13 +110,13 @@ function sendWaypoints() {
 }
 function sendPredeterminedWaypoints() {
   current_coordinate_list = [];
-  var x_actual = 700;
-  var y_actual = 1300;
+  var x_actual = 800;
+  var y_actual = 1200;
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
   var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
   current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
   var x_actual = 3000;
-  var y_actual = 1300;
+  var y_actual = 1200;
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
   var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
   current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
@@ -125,7 +125,7 @@ function sendPredeterminedWaypoints() {
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
   var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
   current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
-  var x_actual = 700;
+  var x_actual = 800;
   var y_actual = 2000;
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
   var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
