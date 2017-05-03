@@ -219,7 +219,6 @@ function drawFlags() {
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
   for(var i = 0; i < number_of_coordinates; i++) {
-    drawFlag(current_coordinate_list[i].x-20,current_coordinate_list[i].y-35,i+1)
     if(i > 0) {
       context.setLineDash([5]);
       context.beginPath();
@@ -230,6 +229,9 @@ function drawFlags() {
       context.stroke();
       context.setLineDash([]);
     }
+  }
+  for(var i = 0; i < number_of_coordinates; i++) {
+    drawFlag(current_coordinate_list[i].x-20,current_coordinate_list[i].y-35,i+1);
   }
 }
 /* connects selected robots together with a line, also shows central point */
