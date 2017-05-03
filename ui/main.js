@@ -109,6 +109,7 @@ function sendWaypoints() {
   }
 }
 function sendPredeterminedWaypoints() {
+  current_coordinate_list = [];
   var x_actual = 700;
   var y_actual = 1300;
   var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
