@@ -109,10 +109,27 @@ function sendWaypoints() {
   }
 }
 function sendPredeterminedWaypoints() {
-  current_coordinate_list.push({x_actual:700,y_actual:1300});
-  current_coordinate_list.push({x_actual:3000,y_actual:1300});
-  current_coordinate_list.push({x_actual:3000,y_actual:2000});
-  current_coordinate_list.push({x_actual:700,y_actual:2000});
+  var x_actual = 700;
+  var y_actual = 1300;
+  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
+  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
+  var x_actual = 3000;
+  var y_actual = 1300;
+  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
+  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
+  var x_actual = 3000;
+  var y_actual = 2000;
+  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
+  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
+  var x_actual = 700;
+  var y_actual = 2000;
+  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
+  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
+  number_of_coordinates = 4;
   for(var i = 0; i < current_coordinate_list.length; i++) {
     selected_robots.forEach((robot) => {
       var send_string = `robot_${robot.robotNumber} w ${current_coordinate_list[i].x_actual} ${current_coordinate_list[i].y_actual}`;
@@ -120,7 +137,7 @@ function sendPredeterminedWaypoints() {
       console.log(send_string);
     });
   }
-  current_coordinate_list = [];
+  // current_coordinate_list = [];
 }
 /* removes the little flag that accompanies the cursor when it's active */
 function escapeFlag() {
