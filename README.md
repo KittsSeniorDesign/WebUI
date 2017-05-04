@@ -21,8 +21,8 @@ It is developed for Google Chrome Version 56.0.2924.87 and later.
 - [x] Graphically display robot location.
 - [x] Graphically select robots.
 - [x] Map channels and sinks.
-- [ ] Change individual robot settings.
+- [x] Change individual robot settings.
 
 ### Desired
-- [ ] Graphically relay waypoint information.
+- [x] Graphically relay waypoint information.
 - [ ] Live video feed

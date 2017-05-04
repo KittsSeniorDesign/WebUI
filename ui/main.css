@@ -22,6 +22,9 @@
 #configuration-button{
     display:none;
 }
+#configuration-dropdown-div {
+    margin:0 auto;
+}
 .dropdown-content div {
     font-size:14px;
     color: #c0c0c0;
