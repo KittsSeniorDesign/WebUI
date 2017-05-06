@@ -37,20 +37,18 @@
                   <div onclick="setDropdown('configuration-button','Cluster')">Cluster</div>
                 </div>
               </div>
-              <!-- <div class="dropdown unselectable">
-              <button id="configuration-suboption-button" onclick="toggleDropdown('configuration-suboption-dropdown')" class="dropbtn unselectable">Sub-Configuration</button>
-              <div id="configuration-suboption-dropdown" class="dropdown-content unselectable">
-                <div onclick="setDropdown('configuration-suboption-button','Follow the Leader')">Follow the Leader</div>
-                <div onclick="setDropdown('configuration-suboption-button','Shape')">Shape</div>
-              </div>
-              </div> -->
             </div>
             <div id="waypoint-container">
               <div id="waypoint-container-title" class="generic-title unselectable">Waypoints
                 <button type="button" onclick="sendWaypoints()" id="waypoints-button" class="generic-button unselectable">Send</button>
               </div>
               <div id="coordinates-list" class="flx">
-                <button type="button" onclick="sendPredeterminedWaypoints()" id="waypoints-predetermined-button" class="generic-button unselectable" style="display:none;">Route</button>
+                <div id="waypoint-holder-div">
+                  X: <textarea id="textarea-x" rows="1" cols="4" onkeypress="submitTextWaypoint()"></textarea>
+                  Y: <textarea id="textarea-y" rows="1" cols="4" onkeypress="submitTextWaypoint()"></textarea>
+                </div>
+                <div id="coordinates-list-actual" class="flx">
+                </div>
               </div>
             </div>
             <div id="settings-container">

@@ -18,6 +18,30 @@ var current_sinks = [];
 var current_channels = [];
 var current_sources = [];
 
+function submitTextWaypoint() {
+  var key = window.event.keyCode;
+  var canvas = document.querySelector('#canvas');
+  if(key == 13) {
+    number_of_coordinates++;
+    var x_actual = document.querySelector('#textarea-x').value;
+    var y_actual = document.querySelector('#textarea-y').value;
+    document.querySelector('#textarea-x').value = "";
+    document.querySelector('#textarea-y').value = ""
+    document.querySelector('#textarea-x').blur();
+    document.querySelector('#textarea-y').blur();
+    var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
+    var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
+    current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
+    var coordinates = document.createElement('div');
+    coordinates.innerHTML = `Waypoint ${number_of_coordinates}: [ ${x_actual} , ${y_actual} ] [ ${x} , ${y} ]`;
+    coordinates.classList.add('coordinates');
+    var parent = document.getElementById('coordinates-list-actual');
+    parent.insertBefore(coordinates,parent.firstChild);
+    if(document.querySelector('#waypoints-button').style.display != 'inline' && selected_robots.length > 0)
+      document.querySelector('#waypoints-button').style.display = 'inline';
+    drawRobots();
+  }
+}
 /* set the canvas' size once the page has loaded (js gets executed afterward) */
 setCanvasDimensions();
 /* adjust canvas size if window is resized */
@@ -89,7 +113,13 @@ document.addEventListener('keydown', function(e) {
     }
   /* we remove the last active waypoint */
   } else if(e.key === 'Backspace' || e.keyCode == 8) {
-    removeLastWaypoint();
+    if(document.activeElement.id != "textarea-x" && document.activeElement.id != "textarea-y") {
+      removeLastWaypoint();
+    }
+  } else if(e.key === 'f' || e.keyCode === 70) {
+    var canvas = document.getElementById('canvas');
+    canvas.addEventListener('mousemove', showFlag);
+    canvas_flag_active = true;
   }
 });
 /* reset the background on the robot cards, reset outline of robots on canvas, empty selected robots array */
@@ -104,41 +134,11 @@ function sendWaypoints() {
     selected_robots.forEach((robot) => {
       var send_string = `robot_${robot.robotNumber} w ${current_coordinate_list[i].x_actual} ${current_coordinate_list[i].y_actual}`;
       ws.send(send_string);
-      console.log(send_string);
-    });
-  }
-}
-function sendPredeterminedWaypoints() {
-  current_coordinate_list = [];
-  var x_actual = 800;
-  var y_actual = 1200;
-  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
-  current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
-  var x_actual = 3000;
-  var y_actual = 1200;
-  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
-  current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
-  var x_actual = 3000;
-  var y_actual = 2000;
-  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
-  current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
-  var x_actual = 800;
-  var y_actual = 2000;
-  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round(((pozyx_y_max - y_actual) * canvas.height) / pozyx_y_max);
-  current_coordinate_list.push({x:x,x_actual:x_actual,y:y,y_actual:y_actual});
-  number_of_coordinates = 4;
-  for(var i = 0; i < current_coordinate_list.length; i++) {
-    selected_robots.forEach((robot) => {
-      var send_string = `robot_${robot.robotNumber} w ${current_coordinate_list[i].x_actual} ${current_coordinate_list[i].y_actual}`;
+      send_string = `robot_${robot.robotNumber} s ${i+1} ${current_coordinate_list[i].x_actual} ${current_coordinate_list[i].y_actual}`;
       ws.send(send_string);
       console.log(send_string);
     });
   }
-  // current_coordinate_list = [];
 }
 /* removes the little flag that accompanies the cursor when it's active */
 function escapeFlag() {
@@ -152,11 +152,9 @@ function removeLastWaypoint() {
     number_of_coordinates--;
     if(number_of_coordinates == 0) {
       document.querySelector('#waypoints-button').style.display = 'none';
-      if(selected_robots.length > 0)
-        document.querySelector('#waypoints-predetermined-button').style.display = 'block';
     }
     current_coordinate_list = current_coordinate_list.slice(0,-1);
-    document.querySelector('#coordinates-list').removeChild(document.querySelector('#coordinates-list > div'));
+    document.querySelector('#coordinates-list-actual').removeChild(document.querySelector('#coordinates-list-actual > div'));
   }
 }
 /* removes all waypoints, both from the container and canvas, currently unused */
@@ -368,11 +366,20 @@ function resetValues(r) {
       value.innerHTML = '0';
   });
 }
+function drawCornerFlag() {
+  var canvas = document.querySelector('canvas');
+  var context = canvas.getContext('2d');
+  var canvas_container = document.getElementById('canvas-container');
+  var width = canvas_container.offsetWidth;
+  var height = canvas_container.offsetHeight;
+  context.beginPath();
+  context.lineWidth=2;
+  context.rect(width-50,10,40,40);
+  context.strokeStyle = '#FFFFFF';
+  context.stroke();
+}
 function drawGrid() {
-  var x_actual = 1000;
-  var y_actual = 1000;
-  var x = Math.round((x_actual * canvas.width) / pozyx_x_max);
-  var y = Math.round((y_actual * canvas.height) / pozyx_y_max);
+  
 }
 /* draws all active robots on the canvas */
 function drawRobots() {
@@ -384,10 +391,6 @@ function drawRobots() {
   var width = canvas_container.offsetWidth;
   var height = canvas_container.offsetHeight;
   context.clearRect(0, 0, width, height);
-  context.lineWidth=2;
-  context.rect(width-50,10,40,40);
-  context.strokeStyle = '#FFFFFF';
-  context.stroke();
   drawFlag(width-48,18);
   if(canvas_flag_active) {
     drawFlag(canvas_flag_position.x,canvas_flag_position.y);
@@ -406,6 +409,7 @@ function drawRobots() {
     context.fillStyle = robot.color_fill;
     context.fill();
     context.stroke();
+    drawCornerFlag();
   });
 }
 window.setInterval(drawRobots, 50);
@@ -560,10 +564,18 @@ function checkMessage(m) {
   } else if(m.includes('Source') || m.includes('Sink') || m.includes('Channel')) {
     setDT(m);
   } else if(m.includes('robot_')) {
-    var robot_id = m.split(',')[0].slice(6).split('-')[0];
-    var robot_vars = m.split(';')[0].split(',');
-    robot_vars[0] = robot_id;
-    updateRobot(robot_vars);
+    var robots_ = m.split(';');
+    robots_.forEach((message) => {
+      if(message.length > 0) {
+        var robot_vars = message.split(',');
+        robot_vars[0] = message.split(',')[0].slice(6);
+        updateRobot(robot_vars);
+      }
+    });
+    // var robot_id = m.split(',')[0].slice(6).split('-')[0];
+    // var robot_vars = m.split(';')[0].split(',');
+    // robot_vars[0] = robot_id;
+    // updateRobot(robot_vars);
   } else {
     console.log(m);
   }
@@ -622,7 +634,6 @@ function displaySettings(event, id, graphics) {
   if(current_coordinate_list.length > 0)
     document.getElementById('waypoints-button').style.display = 'block';
   
-  document.querySelector('#waypoints-predetermined-button').style.display = 'block';
   var rnumber = 0;
   var container;
   var selection_flag = false;
@@ -633,13 +644,13 @@ function displaySettings(event, id, graphics) {
     if(!graphics)
       rnumber = this.id.slice(this.id.indexOf('-')+1)
     if(robot.robotNumber == rnumber) {
-      if(robot.color_stroke != '#FF0000') {
+      if(robot.color_stroke != '#00FF00') {
         if(!event.shiftKey)
           resetAllStrokes();
-        robot.color_stroke = '#FF0000';
+        robot.color_stroke = '#00FF00';
       } else {
         resetAllStrokes();
-        robot.color_stroke = '#FF0000';
+        robot.color_stroke = '#00FF00';
       }
       if(robot.configuration === 'Cluster') {
         if(!event.shiftKey) {
@@ -649,7 +660,7 @@ function displaySettings(event, id, graphics) {
         }
         current_clusters[robot.cluster].forEach((robot) => {
           selected_robots.push(robot);
-          robot.color_stroke = '#FF0000';
+          robot.color_stroke = '#0000FF';
           document.getElementById('rc-'+robot.robotNumber).style.backgroundColor = 'rgb(24, 24, 24)';
           selection_flag = true;
         });
@@ -677,7 +688,6 @@ function displaySettings(event, id, graphics) {
   }
   if(current_coordinate_list.length > 0)
     document.querySelector('#waypoints-button').style.display = 'inline';
-  document.querySelector('#waypoints-predetermined-button').style.display = 'block';
 }
 /* resets the background color of the robot cards */
 function resetAllBackgrounds() {
@@ -704,7 +714,6 @@ function showFlag(evt) {
 /* resets the outline of the robots on the canvas */
 function resetAllStrokes() {
   document.getElementById('waypoints-button').style.display = 'none';
-  document.querySelector('#waypoints-predetermined-button').style.display = 'none';
   selected_robots = [];
   document.getElementById('configuration-button').style.display = 'none';
   current_robot_list.forEach((robot) => {
@@ -737,12 +746,11 @@ document.getElementById('canvas').addEventListener('mousedown', function canvasC
       canvas_flag_active = false;
     }
   } else if(canvas_flag_active) {
-    document.querySelector('#waypoints-predetermined-button').style.display = 'none';
     current_coordinate_list.push({x:x,y:height-y,x_actual:x_actual,y_actual:y_actual});
     var coordinates = document.createElement('div');
     coordinates.innerHTML = `Waypoint ${++number_of_coordinates}: [ ${x_actual} , ${y_actual} ] [ ${x} , ${y} ]`;
     coordinates.classList.add('coordinates');
-    var parent = document.getElementById('coordinates-list');
+    var parent = document.getElementById('coordinates-list-actual');
     parent.insertBefore(coordinates,parent.firstChild);
     if(document.querySelector('#waypoints-button').style.display != 'inline' && selected_robots.length > 0)
       document.querySelector('#waypoints-button').style.display = 'inline';

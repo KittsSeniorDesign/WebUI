@@ -25,6 +25,26 @@
 #configuration-dropdown-div {
     margin:0 auto;
 }
+textarea {
+    display:inline-block;
+    resize:none;
+    margin:0 auto;
+    width:50px;
+    border:1px solid #111111;
+    outline:none;
+    background-color:#222222;
+    color:#F9F9F9;
+    font-size:14px;
+    height:19px;
+    padding:2px;
+    position:relative;
+    top:7px;
+}
+#waypoint-holder-div {
+    margin:5px auto;
+    margin-top:-10px;
+    height:25px;
+}
 .dropdown-content div {
     font-size:14px;
     color: #c0c0c0;
@@ -73,7 +93,7 @@
   display:flex;
   overflow:auto;
   margin:4px;
-  margin-right:15px;
+  margin-right:23px;
   margin-bottom:-1px;
   padding:5px;
   background-color:#333333;
