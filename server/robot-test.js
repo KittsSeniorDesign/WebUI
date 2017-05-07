@@ -5,6 +5,7 @@ var nss = new net.Socket();
 var number_of_robots = 1;
 var robots = [];
 var current_waypoints = [];
+var stop = false;
 
 var tcpClient;
 
@@ -60,6 +61,7 @@ function beginRoute(id) {
     if(robot.number === id) {
       robot.waypoint = true;
       robot.waypoint_number = 0;
+      robot.stop = false;
     }
   });
 }
@@ -74,6 +76,9 @@ function endRoute(id) {
 function loopRoute(robot) {
   robot.waypoint = true;
   robot.waypoint_number = 0;
+}
+function stopRoute(robot) {
+  robot.stop = true;
 }
 nss.on('close', function() {
   console.log('TCP connection closed.');
@@ -98,10 +103,10 @@ function advanceWaypoint(robot) {
         robot.y_end = current_waypoints[robot.number].waypoints[robot.waypoint_number].y;
         robot.z_end = current_waypoints[robot.number].waypoints[robot.waypoint_number].z;
       } catch(e) {
-        loopRoute(robot);
+        stopRoute(robot);
       }
     } else {
-      loopRoute(robot);
+      stopRoute(robot);
     }
   }
 }
@@ -144,9 +149,11 @@ function setFuture(robot) {
     else if(robot.y_future < 0)
       robot.y_future = 2854;
   } else {
-    robot.x_end = current_waypoints[robot.number].waypoints[robot.waypoint_number].x;
-    robot.y_end = current_waypoints[robot.number].waypoints[robot.waypoint_number].y;
-    robot.z_end = current_waypoints[robot.number].waypoints[robot.waypoint_number].z;
+    try {
+      robot.x_end = current_waypoints[robot.number].waypoints[robot.waypoint_number].x;
+      robot.y_end = current_waypoints[robot.number].waypoints[robot.waypoint_number].y;
+      robot.z_end = current_waypoints[robot.number].waypoints[robot.waypoint_number].z;
+    } catch(e) {}
     advanceWaypoint(robot);
     calculateFuture(robot);
   }
@@ -207,7 +214,8 @@ function generateRobots() {
       heading_delta:0,
       waypoint:false,
       waypoint_number:undefined,
-      timer:undefined
+      timer:undefined,
+      stop:false
     });
   }
 }
@@ -223,8 +231,10 @@ function sendRobot(robot) {
 function setUpdates() {
   robots.forEach((robot) => {
     var t = timers.setInterval(function() {
-      setFuture(robot);
-      advanceRobot(robot);
+      if(!robot.stop) {
+        setFuture(robot);
+        advanceRobot(robot);
+      }
       sendRobot(robot);
     },25);
   });

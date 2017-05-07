@@ -5,7 +5,7 @@ var single_robot_string = false;
 var ws;
 var current_robot_list = [];
 var selected_robots = [];
-var data_timeout = 10000;
+var data_timeout = 1000;
 var removal_timeout = 100000000000;
 var pozyx_x_max = 3946;
 var pozyx_y_max = 2854;
@@ -17,6 +17,7 @@ var current_clusters = [];
 var current_sinks = [];
 var current_channels = [];
 var current_sources = [];
+var manual_control = false;
 
 function submitTextWaypoint() {
   var key = window.event.keyCode;
@@ -120,8 +121,93 @@ document.addEventListener('keydown', function(e) {
     var canvas = document.getElementById('canvas');
     canvas.addEventListener('mousemove', showFlag);
     canvas_flag_active = true;
+  } else if(e.key === 'm') {
+    if(manual_control)
+      manual_control = false;
+    else
+      manual_control = true;
+  } else if(manual_control && e.key === 'ArrowUp') {
+    console.log('yep');
+    controlRobots('u');
+  } else if(manual_control && e.key === 'ArrowDown') {
+    controlRobots('d');
+  } else if(manual_control && e.key === 'ArrowLeft') {
+    controlRobots('l');
+  } else if(manual_control && e.key === 'ArrowRight') {
+    controlRobots('r');
+  } else {
+    console.log(e.key, e.keyCode);
   }
 });
+function controlRobots(key) {
+  selected_robots.forEach((robot) => {
+    if(key === 'u') {
+      var vars = [];
+      vars.push(`${robot.robotNumber}`);
+      vars.push(` dd`);
+      vars.push(` 0`);
+      vars.push(` ${robot.x}`);
+      var y = parseInt(robot.y) + 20;
+      if(y > pozyx_y_max)
+        y = 0;
+      else if(y < 0)
+        y = pozyx_y_max - 1;
+      vars.push(` ${y}`);
+      vars.push(` 0`);
+      vars.push(` 0`);
+      vars.push(` ${robot.heading}`);
+      updateRobot(vars);
+    } else if(key === 'd') {
+      var vars = [];
+      vars.push(`${robot.robotNumber}`);
+      vars.push(` dd`);
+      vars.push(` 0`);
+      vars.push(` ${robot.x}`);
+      var y = parseInt(robot.y) - 20;
+      if(y > pozyx_y_max)
+        y = 0;
+      else if(y < 0)
+        y = pozyx_y_max - 1;
+      vars.push(` ${y}`);
+      vars.push(` 0`);
+      vars.push(` 0`);
+      vars.push(` ${robot.heading}`);
+      updateRobot(vars);
+    } else if(key === 'l') {
+      var vars = [];
+      vars.push(`${robot.robotNumber}`);
+      vars.push(` dd`);
+      vars.push(` 0`);
+      var x = parseInt(robot.x) - 20;
+      if(x > pozyx_x_max)
+        x = 0;
+      else if(x < 0)
+        x = pozyx_x_max - 1;
+      vars.push(` ${x}`);
+      vars.push(` ${robot.y}`);
+      vars.push(` 0`);
+      vars.push(` 0`);
+      vars.push(` ${robot.heading}`);
+      updateRobot(vars);
+    } else if(key === 'r') {
+      var vars = [];
+      vars.push(`${robot.robotNumber}`);
+      vars.push(` dd`);
+      vars.push(` 0`);
+      var x = parseInt(robot.x) + 20;
+      if(x > pozyx_x_max)
+        x = 0;
+      else if(x < 0)
+        x = pozyx_x_max - 1;
+      vars.push(` ${x}`);
+      vars.push(` ${robot.y}`);
+      vars.push(` 0`);
+      vars.push(` 0`);
+      vars.push(` ${robot.heading}`);
+      updateRobot(vars);
+    }
+  });
+}
 /* reset the background on the robot cards, reset outline of robots on canvas, empty selected robots array */
 function unselectAll() {
   resetAllStrokes();
@@ -444,7 +530,7 @@ function createRobot(vars) {
     status:'Connected',
     x: undefined,
     y: undefined,
-    heading: 0,
+    heading: 0, /* radians */
     radius: 15,
     color_fill: fill_color,
     color_stroke: '#FFFFFF',
@@ -563,7 +649,7 @@ function checkMessage(m) {
     setDT(m);
   } else if(m.includes('Source') || m.includes('Sink') || m.includes('Channel')) {
     setDT(m);
-  } else if(m.includes('robot_')) {
+  } else if(manual_control == false && m.includes('robot_')) {
     var robots_ = m.split(';');
     robots_.forEach((message) => {
       if(message.length > 0) {
@@ -577,7 +663,7 @@ function checkMessage(m) {
     // robot_vars[0] = robot_id;
     // updateRobot(robot_vars);
   } else {
-    console.log(m);
+    // console.log(m);
   }
 }
 /* adds a new robot card */
