@@ -650,18 +650,18 @@ function checkMessage(m) {
   } else if(m.includes('Source') || m.includes('Sink') || m.includes('Channel')) {
     setDT(m);
   } else if(manual_control == false && m.includes('robot_')) {
-    var robots_ = m.split(';');
-    robots_.forEach((message) => {
-      if(message.length > 0) {
-        var robot_vars = message.split(',');
-        robot_vars[0] = message.split(',')[0].slice(6);
-        updateRobot(robot_vars);
-      }
-    });
-    // var robot_id = m.split(',')[0].slice(6).split('-')[0];
-    // var robot_vars = m.split(';')[0].split(',');
-    // robot_vars[0] = robot_id;
-    // updateRobot(robot_vars);
+    // var robots_ = m.split(';');
+    // robots_.forEach((message) => {
+    //   if(message.length > 0) {
+    //     var robot_vars = message.split(',');
+    //     robot_vars[0] = message.split(',')[0].slice(6);
+    //     updateRobot(robot_vars);
+    //   }
+    // });
+    var robot_id = m.split(',')[0].slice(6).split('-')[0];
+    var robot_vars = m.split(';')[0].split(',');
+    robot_vars[0] = robot_id;
+    updateRobot(robot_vars);
   } else {
     // console.log(m);
   }
