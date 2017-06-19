@@ -2,7 +2,7 @@ var net = require('net');
 var timers = require('timers')
 
 var nss = new net.Socket();
-var number_of_robots = 1;
+var number_of_robots = 2;
 var robots = [];
 var current_waypoints = [];
 var stop = false;
@@ -18,7 +18,13 @@ nss.connect(9001, '127.0.0.1', function() {
 nss.on('data', function(data) {
   if(data == 'requestDTconfig()') {
     try{
-      tcpClient.write('DTConfig: matlab/commands Channel,robot_1 Sink,robot_1-source/states Channel');
+      var send_string = 'DTConfig: matlab/commands Channel,';
+      for(var i = 0; i < robots.length; i++) {
+        send_string += `robot_${i} Sink, robot_${i}-source/states Channel,`;
+      }
+      send_string = send_string.slice(0,-1);
+      console.log(send_string);
+      tcpClient.write(send_string);
     } catch(e) {}
   } else if(data.includes('s')) {
     var msg = data.toString().split('robot_');
@@ -219,10 +225,17 @@ function generateRobots() {
     });
   }
 }
+var number_of_messages = 0;
+var num_of_messages = 0;
 function sendRobot(robot) {
   var send_string = `${robot.name}, ${robot.type}, ${robot.color}, ${robot.x_present}, ${robot.y_present}, ${robot.z_present}, ${robot.velocity}, ${robot.heading};`;
   try {
     tcpClient.write(send_string);
+    number_of_messages+=Buffer.byteLength(send_string, 'utf8');
+    num_of_messages++;
+    console.log(number_of_messages/(num_of_messages*25));
+    if(number_of_messages == 10000)
+      process.exit(1);
   } catch(e) {
     console.error(`An error has occured: ${e.message}`);
     process.exit(1);

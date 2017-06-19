@@ -122,12 +122,11 @@ document.addEventListener('keydown', function(e) {
     canvas.addEventListener('mousemove', showFlag);
     canvas_flag_active = true;
   } else if(e.key === 'm') {
-    if(manual_control)
-      manual_control = false;
-    else
-      manual_control = true;
+    // if(manual_control)
+    //   manual_control = false;
+    // else
+    //   manual_control = true;
   } else if(manual_control && e.key === 'ArrowUp') {
-    console.log('yep');
     controlRobots('u');
   } else if(manual_control && e.key === 'ArrowDown') {
     controlRobots('d');
@@ -136,7 +135,7 @@ document.addEventListener('keydown', function(e) {
   } else if(manual_control && e.key === 'ArrowRight') {
     controlRobots('r');
   } else {
-    console.log(e.key, e.keyCode);
+    // console.log(e.key, e.keyCode);
   }
 });
 function controlRobots(key) {
@@ -406,26 +405,40 @@ function setDT(message) {
     document.querySelector('#robots-dropdown').removeChild(element);
   });
   m.forEach((msg) => {
-    if(msg.includes('Channel')) {
+    console.log(msg.trim());
+    if(msg.includes('Channel') && msg.length > 0) {
+      console.log(msg);
       var msg = msg.split(' ')[0];
       current_channels.push(msg);
       if(!msg.includes('robot')) { /* controller */
-        var parent = document.querySelector('#controllers-dropdown');
-        var child = document.createElement('div');
-        child.addEventListener('click', function() {
-          setDropdown('controllers-button', msg);
-        });
-        child.innerHTML = msg;
-        parent.appendChild(child);
-        console.log(`Controller: ${msg}`);
-      } else { /* robot */
-        msg = msg.split('-')[0];
         var non_duplicate = true;
-        document.querySelectorAll('#robots-dropdown>div').forEach((element) => {
-          if(elemnent.innerHTML === msg) {
-            non_duplicate = false;
-          }
-        });
+        try {
+          document.querySelectorAll('#controllers-dropdown>div').forEach((element) => {
+            if(elemnent.innerHTML === msg) {
+              non_duplicate = false;
+            }
+          });
+        } catch(e) {}
+        if(non_duplicate) {
+          var parent = document.querySelector('#controllers-dropdown');
+          var child = document.createElement('div');
+          child.addEventListener('click', function() {
+            setDropdown('controllers-button', msg);
+          });
+          child.innerHTML = msg;
+          parent.appendChild(child);
+        }
+      } else { /* robot */
+        msg = msg.split('-');
+        console.log(msg);
+        var non_duplicate = true;
+        try {
+          document.querySelectorAll('#robots-dropdown>div').forEach((element) => {
+            if(elemnent.innerHTML === msg) {
+              non_duplicate = false;
+            }
+          });
+        } catch(e) {};
         if(non_duplicate) {
           var parent = document.querySelector('#robots-dropdown');
           var child = document.createElement('div');
@@ -643,25 +656,27 @@ function updateRobot(vars) {
   }
 }
 /* parses message received from websocket */
+var number_of_messages = 0;
 function checkMessage(m) {
+  console.log(++number_of_messages);
   if(m.includes('DTConfig: ')) {
     console.log('Received channels and sinks from DataTurbine.');
     setDT(m);
   } else if(m.includes('Source') || m.includes('Sink') || m.includes('Channel')) {
     setDT(m);
   } else if(manual_control == false && m.includes('robot_')) {
-    // var robots_ = m.split(';');
-    // robots_.forEach((message) => {
-    //   if(message.length > 0) {
-    //     var robot_vars = message.split(',');
-    //     robot_vars[0] = message.split(',')[0].slice(6);
-    //     updateRobot(robot_vars);
-    //   }
-    // });
-    var robot_id = m.split(',')[0].slice(6).split('-')[0];
-    var robot_vars = m.split(';')[0].split(',');
-    robot_vars[0] = robot_id;
-    updateRobot(robot_vars);
+    var robots_ = m.split(';');
+    robots_.forEach((message) => {
+      if(message.length > 0) {
+        var robot_vars = message.split(',');
+        robot_vars[0] = message.split(',')[0].slice(6);
+        updateRobot(robot_vars);
+      }
+    });
+    // var robot_id = m.split(',')[0].slice(6).split('-')[0];
+    // var robot_vars = m.split(';')[0].split(',');
+    // robot_vars[0] = robot_id;
+    // updateRobot(robot_vars);
   } else {
     // console.log(m);
   }
